@@ -8,6 +8,7 @@ namespace Autómata_II_SQL
 {
     static class AnalizadorSintactico
     {
+        //Comentario
         static string[,] TablaSintactica = new string[,]
         {
             {"4",       "8",        "10",                   "11",       "12",       "13",           "14",       "15",       "50",       "51",       "53",       "54",           "61",       "62",       "72",       "199"},
