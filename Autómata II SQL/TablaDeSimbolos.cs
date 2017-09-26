@@ -112,33 +112,33 @@ namespace Autómata_II_SQL
             return Buscar(IdentificadoresL, Caracter, out Indice, true);
         }
 
-        //public static bool EsIdentificador(string Caracter)
-        //{
-        //    int x;
-        //    return EsIdentificador(Caracter, out x);
-        //}
+        public static bool EsIdentificador(string Caracter)
+        {
+            int x;
+            return EsIdentificador(Caracter, out x);
+        }
 
         public static bool EsOperador(char Caracter, out int Indice)
         {
             return Buscar(Operadores, Caracter, out Indice);
         }
 
-        //public static bool EsOperador(char Caracter)
-        //{
-        //    int x;
-        //    return EsOperador(Caracter, out x);
-        //}
+        public static bool EsOperador(char Caracter)
+        {
+            int x;
+            return EsOperador(Caracter, out x);
+        }
 
         public static bool EsDelimitador(char Caracter, out int Indice)
         {
             return Buscar(Delimitadores, Caracter, out Indice);
         }
 
-        //public static bool EsDelimitador(char Caracter)
-        //{
-        //    int x;
-        //    return Buscar(Delimitadores, Caracter, out x);
-        //}
+        public static bool EsDelimitador(char Caracter)
+        {
+            int x;
+            return Buscar(Delimitadores, Caracter, out x);
+        }
 
         public static bool EsRelacional(string Palabra, out int Indice)
         {
@@ -155,22 +155,22 @@ namespace Autómata_II_SQL
             return Encontrado;
         }
 
-        //public static bool EsRelacional(string Caracter)
-        //{
-        //    int x;
-        //    return EsRelacional(Caracter, out x);
-        //}
+        public static bool EsRelacional(string Caracter)
+        {
+            int x;
+            return EsRelacional(Caracter, out x);
+        }
 
-        //public static bool EsConstante(string Caracter, out int Indice)
-        //{
-        //    return Buscar(ConstantesL, Caracter, out Indice, false);
-        //}
+        public static bool EsConstante(string Caracter, out int Indice)
+        {
+            return Buscar(ConstantesL, Caracter, out Indice, false);
+        }
 
-        //public static bool EsConstante(string Caracter)
-        //{
-        //    int x;
-        //    return EsConstante(Caracter, out x);
-        //}
+        public static bool EsConstante(string Caracter)
+        {
+            int x;
+            return EsConstante(Caracter, out x);
+        }
 
         public static bool EsPalabraReservada(string Palabra, out int Indice)
         {
@@ -187,11 +187,11 @@ namespace Autómata_II_SQL
             return Encontrado;
         }
 
-        //public static bool EsPalabrareservada(string Palabra)
-        //{
-        //    int x;
-        //    return EsPalabraReservada(Palabra, out x);
-        //}
+        public static bool EsPalabrareservada(string Palabra)
+        {
+            int x;
+            return EsPalabraReservada(Palabra, out x);
+        }
 
         private static void Agregar(List<string[]> Lista, params string[] Caracteres)
         {

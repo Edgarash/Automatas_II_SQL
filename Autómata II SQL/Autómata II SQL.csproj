@@ -58,6 +58,7 @@
       <DependentUpon>Analizadores.cs</DependentUpon>
     </Compile>
     <Compile Include="AnalizadorLexico.cs" />
+    <Compile Include="AnalizadorSintactico.cs" />
     <Compile Include="ModuloErrores.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
