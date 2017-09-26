@@ -9,7 +9,7 @@ namespace Autómata_II_SQL
     static class TablaDeSimbolos
     {
         private static int ValorIdentificador = 400;
-        private static int ValorConstante = 90;
+        private static int ValorConstante = 600;
 
         //public static int Operador { get { return 7; } }
         //public static int Delimitador { get { return 5; } }
@@ -33,7 +33,7 @@ namespace Autómata_II_SQL
             { "(" ,"52" },
             { ")", "53" },
             { "'", "54" },
-            { ";", "55" }
+//            { ";", "55" }
         };
 
         public static string[,] Relacionales = new string[,]
@@ -207,15 +207,27 @@ namespace Autómata_II_SQL
 
         public static int AgregarConstante(int Numero, string Constante)
         {
-            int x = ValorConstante - 90; //Obtener el índice en la lista
+            int x = ValorConstante - 600; //Obtener el índice en la lista
             Agregar(ConstantesL, Numero.ToString(), Constante, (++ValorConstante).ToString());
             return x;
+        }
+
+        public static string BuscarConstante(string Valor)
+        {
+            string temp = "";
+            for (int i = 0; i < ConstantesL.Count; i++)
+                if (ConstantesL[i][2] == Valor)
+                {
+                    temp = ConstantesL[i][1];
+                    break;
+                }
+            return temp;
         }
 
         public static void Reset()
         {
             ValorIdentificador = 400;
-            ValorConstante = 90;
+            ValorConstante = 600;
             IdentificadoresL.Clear();
             ConstantesL.Clear();
         }

@@ -43,17 +43,17 @@ namespace Autómata_II_SQL
                 for (int i = 0; i < Constantes.Length; i++)
                     for (int j = 0; j < Constantes[0].Length; j++)
                         dgvConstantes[j, i].Value = Constantes[i][j];
-                ////Analizador
-                //if (!Error)
-                //{
-                //    AnalizadorSintactico.Analizar();
-                //    //Tabla Arbol Sintactico
-                //    string[][] Arbol = AnalizadorSintactico.ArbolSintactico;
-                //    dgvArbol.RowCount = Arbol.Length;
-                //    for (int i = 0; i < Arbol.Length; i++)
-                //        for (int j = 0; j < Arbol[i].Length; j++)
-                //            dgvArbol[j, i].Value = Arbol[i][j];
-                //}
+                //Analizador Sintactico
+                if (!Error)
+                {
+                    AnalizadorSintactico.Analizar();
+                    //Tabla Arbol Sintactico
+                    string[][] Arbol = AnalizadorSintactico.ArbolSintactico;
+                    dgvArbol.RowCount = Arbol.Length;
+                    for (int i = 0; i < Arbol.Length; i++)
+                        for (int j = 0; j < Arbol[i].Length; j++)
+                            dgvArbol[j, i].Value = Arbol[i][j];
+                }
                 //Mensaje Error
                 if (Error)
                 {
@@ -64,19 +64,19 @@ namespace Autómata_II_SQL
                 {
                     lblMensaje.ForeColor = Color.Green;
                     lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.Error.Sintáctico, 0, 0, ' ');
-                    //if (!AnalizadorSintactico.Error)
-                    //{
-                    //    lblMensaje.ForeColor = Color.Green;
-                    //    lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.Error.Sintáctico, 0, 0, ' ');
-                    //}
-                    //else
-                    //{
-                    //    lblMensaje.ForeColor = Color.Red;
-                    //    int Apuntador = AnalizadorSintactico.Apuntador - 1;
-                    //    int Lin = Convert.ToInt32(AnalizadorLexico.TablaLexica[Apuntador][1]);
-                    //    char Token = AnalizadorLexico.TablaLexica[Apuntador][2][0];
-                    //    lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.Error.Sintáctico, AnalizadorSintactico.NumError, Lin, Token);
-                    //}
+                    if (!AnalizadorSintactico.Error)
+                    {
+                        lblMensaje.ForeColor = Color.Green;
+                        lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.Error.Sintáctico, 0, 0, ' ');
+                    }
+                    else
+                    {
+                        lblMensaje.ForeColor = Color.Red;
+                        int Apuntador = AnalizadorSintactico.Apuntador - 1;
+                        int Lin = Convert.ToInt32(AnalizadorLexico.TablaLexica[Apuntador][1]);
+                        char Token = AnalizadorLexico.TablaLexica[Apuntador][2][0];
+                        lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.Error.Sintáctico, AnalizadorSintactico.NumError, Lin, Token);
+                    }
                 }
             }
             else

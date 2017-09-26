@@ -20,15 +20,31 @@ namespace Autómata_II_SQL
         private static int Ultimo { get; set; }
 
         public static int NoLinea { get; set; }
-        public static string[][] TablaLexica { get { return TL.ToArray(); } } //?
+        public static string[][] TablaLexica { get { return TL.ToArray(); } }
 
         public static string CadenaLexica
         {
             get
             {
                 string temp = "";
+                string[][] TLL = TablaLexica;
                 for (int i = 0; i < TL.Count; i++)
-                    temp += TL[i][2];
+                {
+                    if (TLL[i][3] == "6")
+                    {
+                        bool Alfa = false;
+                        if (TLL[i - 1][4] == "54")
+                            Alfa = true;
+                        temp += " " + (Alfa ? 62 : 61);
+                    }
+                    else
+                    {
+                        if (TLL[i][3] == "4" || TLL[i][3] == "8")
+                            temp += " " + TLL[i][3];
+                        else
+                            temp += " " + TLL[i][4];
+                    }
+                }
                 return temp;
             }
         }
@@ -315,7 +331,7 @@ namespace Autómata_II_SQL
 
         private static void AgregarConstanteTL()
         {
-            AgregarTL(Caracter.ToString(), NoLinea.ToString(), "CONSTANTE", "9", TablaDeSimbolos.ConstantesL[Indice][2]);
+            AgregarTL(Caracter.ToString(), NoLinea.ToString(), "CONSTANTE", "6", TablaDeSimbolos.ConstantesL[Indice][2]);
         }
 
         private static void AgregarRelacionalTL()

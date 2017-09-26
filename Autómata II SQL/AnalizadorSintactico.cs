@@ -46,23 +46,63 @@ namespace Autómata_II_SQL
 
         private static int ObtenerIndiceK()
         {
-            int Index = 0;
-
-            return Index;
+            int temp = 0;
+            switch (K)
+            {
+                case "4":
+                    temp = 0;
+                    break;
+                case "8":
+                    temp = 1;
+                    break;
+                case "10":
+                case "11":
+                case "12":
+                case "13":
+                case "14":
+                case "15":
+                    temp = byte.Parse(K) - 8;
+                    break;
+                case "50":
+                case "51":
+                    temp = byte.Parse(K) - 42;
+                    break;
+                case "53":
+                case "54":
+                    temp = byte.Parse(K) - 43;
+                    break;
+                case "61":
+                case "62":
+                    temp = byte.Parse(K) - 49;
+                    break;
+                case "72":
+                    temp = 14;
+                    break;
+                case "199":
+                    temp = 15;
+                    break;
+            }
+            return temp;
         }
 
         private static void InsertarPila(string Caracter)
         {
-            if (Caracter == "8" || Caracter == "9")
-                Pila = K.ToString() + Pila;
-            else
                 Pila = Caracter.ToString() + ' ' + Pila;
         }
 
         private static string ExtraerPila()
         {
-            string temp = Pila.Split(new string[] { "" }, StringSplitOptions.RemoveEmptyEntries)[0];
-            Pila = Pila.Substring(1);
+            string[] t = Pila.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            string temp = "";
+            if (t.Length > 0)
+            {
+                temp = t[0];
+                Pila = "";
+                for (int i = 1; i < t.Length; i++)
+                {
+                    Pila += " " + t[i];
+                }
+            }
             return temp;
         }
 
@@ -72,51 +112,40 @@ namespace Autómata_II_SQL
             Arbol = new List<string[]>();
             Error = false;
             Pila = "";
-            InsertarPila("$");
-            InsertarPila("1"); //Insertar Q
-            Cadena = AnalizadorLexico.CadenaLexica + "$";
+            InsertarPila("199");
+            InsertarPila("300"); //Insertar Q
+            Cadena = AnalizadorLexico.CadenaLexica + " 199";
             Apuntador = 0;
-            AgregarRegistro(Pila, Cadena, "", "");
+            AgregarRegistro(Pila, RestanteCadena, "", "");
             do
             {
                 X = ExtraerPila();
                 K = Cadena.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)[Apuntador];
                 AgregarRegistro();
-                if (int.TryParse(X, out Xx) || X == "$")
+                Xx = int.Parse(X);
+                if ((Xx >= 4 && Xx <= 90) || (Xx == 199)) //Como saber si x es un terminal porque todos son números :B Debe estar bien hasta aquí
                 {
                     if (X == K)
                     {
                         Apuntador++;
-                        //AgregarRegistro();
                     }
                     else
                     {
                         Error = true;
-                        if (TablaDeSimbolos.EsDelimitador(X[0]))
-                            NumError = 1;
-                        else
-                        {
-                            if (TablaDeSimbolos.EsOperador(X[0]))
-                                NumError = 3;
-                            else
-                            {
-                                if (TablaDeSimbolos.EsIdentificador(X))
-                                    NumError = 2;
-                            }
-                        }
                     }
                 }
                 else
                 {
-                    int t = Convert.ToInt32(X.ToString());
-                    int p = ObtenerIndiceK();
+                    int t = Convert.ToInt32(X.ToString()) - 299;
+                    int p = ObtenerIndiceK();   //
                     string temp = TablaSintactica[t, p];
                     if (temp != "")
                     {
-                        if (temp != "0")
+                        if (temp != "99")
                         {
-                            for (int i = temp.Length - 1; i >= 0; i--)
-                                InsertarPila(temp.Split(' ')[i]);
+                            string[] split = temp.Split(' ');
+                            for (int i = split.Length - 1; i >= 0; i--)
+                                InsertarPila(split[i]);
                             AgregarRegistro(Pila, "", X, K);
                         }
                     }
@@ -126,7 +155,7 @@ namespace Autómata_II_SQL
                         NumError = 4;
                     }
                 }
-            } while (X != "$" && !Error);
+            } while (X != "199" && !Error);
         }
 
         private static void AgregarRegistro()
@@ -134,10 +163,23 @@ namespace Autómata_II_SQL
             AgregarRegistro
                 (
                 Pila,
-                Cadena.Substring(Apuntador),
+                RestanteCadena,
                 X.ToString(),
                 K.ToString()
                 );
+        }
+
+        private static string RestanteCadena
+        {
+            get
+            {
+
+                string temp = "";
+                string[] t = Cadena.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                for (int i = Apuntador; i < t.Length; i++)
+                    temp += " " + t[i];
+                return temp;
+            }
         }
 
         private static void AgregarRegistro(string Cad1, string Cad2, object Cad3, object Cad4)
