@@ -96,8 +96,8 @@ namespace Autómata_II_SQL
 
         private void SourceCode_TextChanged(object sender, EventArgs e)
         {
-            //SourceCode.ChangeLexerState(0, SourceCode.Text.Length - 1);
-            //Analizar(SourceCode.Text);
+            lblMensaje.ForeColor = Color.Black;
+            lblMensaje.Text = "Analizando...";
             Retraso.Stop();
             Retraso.Start();
         }
