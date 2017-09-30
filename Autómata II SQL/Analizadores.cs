@@ -72,7 +72,7 @@ namespace Autómata_II_SQL
                     else
                     {
                         lblMensaje.ForeColor = Color.Red;
-                        int Apuntador = AnalizadorSintactico.Apuntador - 1;
+                        int Apuntador = AnalizadorSintactico.Apuntador - 1 < 0 ? 0 : AnalizadorSintactico.Apuntador - 1;
                         int Lin = Convert.ToInt32(AnalizadorLexico.TablaLexica[Apuntador][1]);
                         char Token = AnalizadorLexico.TablaLexica[Apuntador][2][0];
                         lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.Error.Sintáctico, AnalizadorSintactico.NumError, Lin, Token);

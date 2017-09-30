@@ -16,10 +16,13 @@ namespace Autómata_II_SQL
             new string [,] 
             {
                 { "2", "200", "Sin Error."},
-                { "2", "201", "Falta Delimitador."},
-                { "2", "202", "Falta Identificador."},
-                { "2", "203", "Falta Operador."},
-                { "2", "204", "Error Sintáctico, cerca de "}
+                { "2", "201", "Se Esperaba Palabra Reservada."},
+                { "2", "204", "Se Esperaba Identificador."},
+                { "2", "205", "Se Esperaba Delimitador."},
+                { "2", "206", "Se Esperaba Constante."},
+                { "2", "207", "Se Esperaba Operador."},
+                { "2", "208", "Se Esperaba Operador Relacional."},
+                { "2", "209", "Se Esperaba "},
             }
         };
 
@@ -38,7 +41,7 @@ namespace Autómata_II_SQL
                     break;
                 case Error.Sintáctico:
                     Cadena = "2:" + Errores[1][0, 1];
-                    Cadena+= (Numero_Error == 0 ? " " : " Error en Línea " + Linea + ": ") + Errores[1][Numero_Error, 2] + (Numero_Error == 4 ? Caracter.ToString() : "");
+                    Cadena+= (Numero_Error == 0 ? " " : " Error en Línea " + Linea + ": ") + Errores[1][Numero_Error, 2] + (Numero_Error == 7 ? AnalizadorSintactico.SeEsperaba : "");
                     break;
             }
             return Cadena;

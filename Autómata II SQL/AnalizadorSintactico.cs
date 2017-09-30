@@ -34,6 +34,30 @@ namespace Autómata_II_SQL
             {"",        "",         "",                     "",         "",         "",             "",         "",         "",         "",         "",         "",             "61",       "",         "",         ""}
         };
 
+        static string[] PrimerosSiguientes = new string[]
+        {
+            "\"SELECT\"",
+            "Identificador o Operador",
+            "Identificador",
+            "Delimitador o Palabra Reservada",
+            "Identificador",
+            "Delimitador o  Operador Relacional o Palabra Reservada",
+            "Identificador",
+            "Palabra Reservada o Delimitador",
+            "Identificador",
+            "Delimitador o Palabra Reservada",
+            "Delimitador o Palabra Reservada",
+            "Identificador",
+            "Delimitador o Palabra Reservada",
+            "Identificador",
+            "Operador o Palabra Reservada",
+            "Operador",
+            "Delimitador o Constante o Identificador",
+            "Palabra Reservada",
+            "Constante",
+            "Constante"
+        };
+
         public static string Pila { get; set; }
         public static string X { get; set; }
         public static string K { get; set; }
@@ -41,6 +65,7 @@ namespace Autómata_II_SQL
         public static bool Error { get; set; }
         public static int NumError { get; set; }
         public static string Cadena { get; set; }
+        public static string SeEsperaba { get; set; }
         public static List<string[]> Arbol { get; set; }
         public static string[][] ArbolSintactico { get { return Arbol.ToArray(); } }
 
@@ -108,6 +133,7 @@ namespace Autómata_II_SQL
 
         public static void Analizar()
         {
+            SeEsperaba = "";
             int Xx;
             Arbol = new List<string[]>();
             Error = false;
@@ -132,6 +158,7 @@ namespace Autómata_II_SQL
                     else
                     {
                         Error = true;
+                        NumError = TablaDeSimbolos.BuscarBuscando(X);
                     }
                 }
                 else
@@ -152,7 +179,8 @@ namespace Autómata_II_SQL
                     else
                     {
                         Error = true;
-                        NumError = 4;
+                        NumError = 7;
+                        SeEsperaba = PrimerosSiguientes[Convert.ToInt32(X) - 300];
                     }
                 }
             } while (X != "199" && !Error);

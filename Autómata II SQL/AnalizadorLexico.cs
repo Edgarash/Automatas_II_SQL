@@ -33,7 +33,7 @@ namespace Autómata_II_SQL
                     if (TLL[i][3] == "6")
                     {
                         bool Alfa = false;
-                        if (TLL[i - 1][4] == "54")
+                        if (TLL[i - 1 < 0 ? 0 : i - 1][4] == "54")
                             Alfa = true;
                         temp += " " + (Alfa ? 62 : 61);
                     }

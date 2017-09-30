@@ -11,13 +11,6 @@ namespace Autómata_II_SQL
         private static int ValorIdentificador = 400;
         private static int ValorConstante = 600;
 
-        //public static int Operador { get { return 7; } }
-        //public static int Delimitador { get { return 5; } }
-        //public static int Constante { get { return 9; } }
-        //public static int Relacional { get { return 8; } }
-        //public static int PalabraReservada { get { return 1; } }
-        //public static int Identificador { get { return 4; } }
-
         public static string[,] Operadores = new string[,]
         {
             { "+", "70" },
@@ -221,6 +214,42 @@ namespace Autómata_II_SQL
                     temp = ConstantesL[i][1];
                     break;
                 }
+            return temp;
+        }
+
+        public static int BuscarBuscando(string Valor)
+        {
+            int temp = 0;
+            bool Encontrado = false;
+            for (int i = 0; i < PalabrasReservadas.GetLength(0); i++)
+                if (PalabrasReservadas[i, 1] == Valor)
+                {
+                    temp = 1;
+                    Encontrado = true;
+                    break;
+                }
+            for (int i = 0; i < Operadores.GetLength(0) && !Encontrado; i++)
+                if (Operadores[i, 1] == Valor)
+                {
+                    temp = 5;
+                    Encontrado = true;
+                }
+            for (int i = 0; i < Delimitadores.GetLength(0) && !Encontrado; i++)
+                if (Delimitadores[i, 1] == Valor)
+                {
+                    temp = 3;
+                    Encontrado = true;
+                }
+            for (int i = 0; i < Relacionales.GetLength(0) && !Encontrado; i++)
+                if (Relacionales[i,1] == Valor)
+                {
+                    temp = 6;
+                    Encontrado = true;
+                }
+            if (Valor == "4")
+                temp = 2;
+            if (Valor == "62" || "61" == Valor)
+                temp = 4;
             return temp;
         }
 
