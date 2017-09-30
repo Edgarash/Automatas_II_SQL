@@ -7,10 +7,21 @@ namespace Autómata_II_SQL
 {
     public partial class Analizadores : Form
     {
+        static Timer Retraso { get; set; }
+
         public Analizadores()
         {
             InitializeComponent();
             InitialiseScintilla();
+            Retraso = new Timer();
+            Retraso.Tick += Retraso_Tick;
+            Retraso.Interval = 1000;
+        }
+
+        private void Retraso_Tick(object sender, EventArgs e)
+        {
+            Analizar(SourceCode.Text);
+            Retraso.Stop();
         }
 
         private void Analizar(string Cadena)
@@ -85,8 +96,10 @@ namespace Autómata_II_SQL
 
         private void SourceCode_TextChanged(object sender, EventArgs e)
         {
-            SourceCode.ChangeLexerState(0, SourceCode.Text.Length - 1);
-            Analizar(SourceCode.Text);
+            //SourceCode.ChangeLexerState(0, SourceCode.Text.Length - 1);
+            //Analizar(SourceCode.Text);
+            Retraso.Stop();
+            Retraso.Start();
         }
 
         private void SourceCode_Delete(object sender, ModificationEventArgs e)
