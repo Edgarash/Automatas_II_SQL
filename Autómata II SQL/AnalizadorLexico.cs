@@ -240,7 +240,7 @@ namespace Autómata_II_SQL
                         }
                         else
                         {
-                            if (char.IsLetterOrDigit(Token))
+                            if (char.IsLetterOrDigit(Token) || Token == '_')
                             {
                                 Acumulador += Token;
                                 Contador++;

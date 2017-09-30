@@ -210,6 +210,9 @@ namespace Autómata_II_SQL
             return false;
         }
 
-    
+        private void SourceCode_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.KeyChar = char.ToUpper(e.KeyChar);
+        }
     }
 }

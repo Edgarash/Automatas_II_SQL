@@ -169,6 +169,7 @@
             this.SourceCode.Insert += new System.EventHandler<ScintillaNET.ModificationEventArgs>(this.SourceCode_Insert);
             this.SourceCode.UpdateUI += new System.EventHandler<ScintillaNET.UpdateUIEventArgs>(this.SourceCode_UpdateUI);
             this.SourceCode.TextChanged += new System.EventHandler(this.SourceCode_TextChanged);
+            this.SourceCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SourceCode_KeyPress);
             // 
             // lblMensaje
             // 
