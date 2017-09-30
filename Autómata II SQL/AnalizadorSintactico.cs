@@ -36,6 +36,22 @@ namespace Autómata_II_SQL
 
         static string[] PrimerosSiguientes = new string[]
         {
+            "\"CREATE\"",
+            "Palabra Reservada",
+            "Identificador",
+            "Palabra Reservada",
+            "Palabra Reservada o Delimitador",
+            "Delimitador",
+            "Identificador o Palabra Reservada",
+            "Palabra Reservada",
+            "Palabra Reservada",
+            "Delimitador o Palabra Reservada",
+            "Delimitador",
+            "Palabra Reservada",
+            "Delimitador o Constante",
+            "Delimitador o Constante",
+            "Delimitador",
+            "Palabra Reservada",
             "\"SELECT\"",
             "Identificador o Operador",
             "Identificador",
@@ -86,25 +102,40 @@ namespace Autómata_II_SQL
                 case "13":
                 case "14":
                 case "15":
+                case "16":
                     temp = byte.Parse(K) - 8;
+                    break;
+                case "18":
+                case "19":
+                case "20":
+                    temp = byte.Parse(K) - 9;
+                    break;
+                case "22":
+                    temp = 12;
+                    break;
+                case "24":
+                case "25":
+                case "26":
+                case "27":
+                    temp = byte.Parse(K) - 11;
                     break;
                 case "50":
                 case "51":
-                    temp = byte.Parse(K) - 42;
+                    temp = byte.Parse(K) - 33;
                     break;
                 case "53":
                 case "54":
-                    temp = byte.Parse(K) - 43;
+                    temp = byte.Parse(K) - 34;
                     break;
                 case "61":
                 case "62":
-                    temp = byte.Parse(K) - 49;
+                    temp = byte.Parse(K) - 40;
                     break;
                 case "72":
-                    temp = 14;
+                    temp = 23;
                     break;
                 case "199":
-                    temp = 15;
+                    temp = 24;
                     break;
             }
             return temp;
@@ -139,7 +170,7 @@ namespace Autómata_II_SQL
             Error = false;
             Pila = "";
             InsertarPila("199");
-            InsertarPila("300"); //Insertar Q
+            InsertarPila("200"); //Insertar Q
             Cadena = AnalizadorLexico.CadenaLexica + " 199";
             Apuntador = 0;
             AgregarRegistro(Pila, RestanteCadena, "", "");
@@ -163,7 +194,10 @@ namespace Autómata_II_SQL
                 }
                 else
                 {
-                    int t = Convert.ToInt32(X.ToString()) - 299;
+                    int t = Convert.ToInt32(X) - 199;
+                    if (X[0]=='3')
+                        t -= 84;
+   
                     int p = ObtenerIndiceK();   //
                     string temp = TablaSintactica[t, p];
                     if (temp != "")
@@ -180,7 +214,7 @@ namespace Autómata_II_SQL
                     {
                         Error = true;
                         NumError = 7;
-                        SeEsperaba = PrimerosSiguientes[Convert.ToInt32(X) - 300];
+                        SeEsperaba = PrimerosSiguientes[Convert.ToInt32(X) - (X[0] == '2' ? 199 : 283)];
                     }
                 }
             } while (X != "199" && !Error);

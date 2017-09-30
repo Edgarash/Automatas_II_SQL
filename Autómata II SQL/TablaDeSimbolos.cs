@@ -26,7 +26,7 @@ namespace Autómata_II_SQL
             { "(" ,"52" },
             { ")", "53" },
             { "'", "54" },
-//            { ";", "55" }
+            { ";", "55" }
         };
 
         public static string[,] Relacionales = new string[,]
