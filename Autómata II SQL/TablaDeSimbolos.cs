@@ -240,12 +240,8 @@ namespace Autómata_II_SQL
                     temp = 3;
                     Encontrado = true;
                 }
-            for (int i = 0; i < Relacionales.GetLength(0) && !Encontrado; i++)
-                if (Relacionales[i,1] == Valor)
-                {
-                    temp = 6;
-                    Encontrado = true;
-                }
+            if (Valor == "8")
+                temp = 6;
             if (Valor == "4")
                 temp = 2;
             if (Valor == "62" || "61" == Valor)
