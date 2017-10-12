@@ -50,44 +50,44 @@ namespace Autómata_II_SQL
 
         };
 
-        static string[] PrimerosSiguientes = new string[]
+        static string[,] PrimerosSiguientes = new string[,]
         {
-            "\"CREATE\"",
-            "Palabra Reservada",
-            "Identificador",
-            "Palabra Reservada",
-            "Palabra Reservada o Delimitador",
-            "Delimitador",
-            "Identificador o Palabra Reservada",
-            "Palabra Reservada",
-            "Palabra Reservada",
-            "Delimitador o Palabra Reservada",
-            "Delimitador",
-            "Palabra Reservada",
-            "Delimitador o Constante",
-            "Delimitador o Constante",
-            "Delimitador",
-            "Palabra Reservada",
-            "\"SELECT\"",
-            "Identificador o Operador",
-            "Identificador",
-            "Delimitador o Palabra Reservada",
-            "Identificador",
-            "Delimitador o  Operador Relacional o Palabra Reservada",
-            "Identificador",
-            "Palabra Reservada o Delimitador",
-            "Identificador",
-            "Delimitador o Palabra Reservada",
-            "Delimitador o Palabra Reservada",
-            "Identificador",
-            "Delimitador o Palabra Reservada",
-            "Identificador",
-            "Operador o Palabra Reservada",
-            "Operador",
-            "Delimitador o Constante o Identificador",
-            "Palabra Reservada",
-            "Constante",
-            "Constante"
+            {"200", "Palabra Reservada" },
+            {"201", "Palabra Reservada" },
+            {"202", "Identificador" },
+            {"203", "Palabra Reservada" },
+            {"204", "Palabra Reservada o Delimitador" },
+            {"205", "Delimitador" },
+            {"206", "Identificador o Palabra Reservada" },
+            {"207", "Palabra Reservada" },
+            {"208", "Palabra Reservada" },
+            {"209", "Delimitador o Palabra Reservada" },
+            {"210", "Delimitador" },
+            {"211", "Palabra Reservada" },
+            {"212", "Delimitador o Constante" },
+            {"213", "Delimitador o Constante" },
+            {"214", "Delimitador" },
+            {"215", "Palabra Reservada" },
+            {"300", "Palabra Reservada" },
+            {"301", "Identificador o Operador" },
+            {"302", "Identificador" },
+            {"303", "Delimitador o Palabra Reservada" },
+            {"304", "Identificador" },
+            {"305", "Delimitador o  Operador Relacional o Palabra Reservada" },
+            {"306", "Identificador" },
+            {"307", "Palabra Reservada o Delimitador" },
+            {"308", "Identificador" },
+            {"309", "Delimitador o Palabra Reservada" },
+            {"310", "Delimitador o Palabra Reservada" },
+            {"311", "Identificador" },
+            {"312", "Delimitador o Palabra Reservada" },
+            {"313", "Identificador" },
+            {"314", "Operador o Palabra Reservada" },
+            {"315", "Operador" },
+            {"316", "Delimitador o Constante o Identificador" },
+            {"317", "Palabra Reservada" },
+            {"318", "Constante" },
+            {"319", "Constante" },
         };
 
         public static string Pila { get; set; }
@@ -118,6 +118,16 @@ namespace Autómata_II_SQL
             for (int i = 0; i < x && temp == -1; i++)
                 if (TablaSintactica[i, 0] == X)
                     temp = i;
+            return temp;
+        }
+
+        private static string ObtenerPrimerosOSiguientes()
+        {
+            string temp = "";
+            int x = PrimerosSiguientes.GetLength(0);
+            for (int i = 0; i < x && temp == ""; i++)
+                if (PrimerosSiguientes[i, 0] == X)
+                    temp = PrimerosSiguientes[i, 1];
             return temp;
         }
 
@@ -191,7 +201,7 @@ namespace Autómata_II_SQL
                     {
                         Error = true;
                         NumError = 7;
-                        SeEsperaba = PrimerosSiguientes[Convert.ToInt32(X) - (X[0] == '2' ? 199 : 283)];
+                        SeEsperaba = ObtenerPrimerosOSiguientes();
                     }
                 }
             } while (X != "199" && !Error);
