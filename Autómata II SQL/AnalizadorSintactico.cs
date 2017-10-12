@@ -176,7 +176,7 @@ namespace Autómata_II_SQL
                 {
                     int t = ObtenerIndiceX();
                     int p = ObtenerIndiceK();
-                    string temp = TablaSintactica[t, p];
+                    string temp = t == -1 || p == -1 ? "" : TablaSintactica[t, p];
                     if (temp != "")
                     {
                         if (temp != "99")
