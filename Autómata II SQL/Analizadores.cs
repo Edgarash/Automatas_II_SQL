@@ -30,12 +30,13 @@ namespace Autómata_II_SQL
             dgvLexico.Rows.Clear();
             dgvIdentificadores.Rows.Clear();
             dgvArbol.Rows.Clear();
+            AnalizadorSemantico.InicializarSemantico();
 
             //Verificando Cadena Vacía
             if (!string.IsNullOrWhiteSpace(Cadena))
             {
                 //Análisis Léxico
-                bool Error = AnalizadorLexico.Analizar(Cadena.ToUpper());
+                ModuloErrores.Error = AnalizadorLexico.Analizar(Cadena.ToUpper());
                 //Tabla Léxica
                 string[][] TablaLexica = AnalizadorLexico.TablaLexica;
                 dgvLexico.RowCount = TablaLexica.Length;
@@ -54,8 +55,14 @@ namespace Autómata_II_SQL
                 for (int i = 0; i < Constantes.Length; i++)
                     for (int j = 0; j < Constantes[0].Length; j++)
                         dgvConstantes[j, i].Value = Constantes[i][j];
+                //Tabla Tablas
+                string[][] Tablas = AnalizadorSemantico.Tablas.ToArray();
+                dgvTablaTablas.RowCount = Tablas.Length;
+                for (int i = 0; i < Tablas.Length; i++)
+                    for (int j = 0; j < Tablas[i].Length; j++)
+                        dgvTablaTablas[j, i].Value = Tablas[i][j];
                 //Analizador Sintactico
-                if (!Error)
+                if (!ModuloErrores.Error)
                 {
                     AnalizadorSintactico.Analizar();
                     //Tabla Arbol Sintactico
@@ -66,19 +73,19 @@ namespace Autómata_II_SQL
                             dgvArbol[j, i].Value = Arbol[i][j];
                 }
                 //Mensaje Error
-                if (Error)
+                if (ModuloErrores.Error)
                 {
                     lblMensaje.ForeColor = Color.Red;
-                    lblMensaje.Text = ModuloErrores.MensajeErrorLéxico(ModuloErrores.Error.Léxico, AnalizadorLexico.NoLinea);
+                    lblMensaje.Text = ModuloErrores.MensajeError();
                 }
                 else
                 {
                     lblMensaje.ForeColor = Color.Green;
-                    lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.Error.Sintáctico, 0, 0, ' ');
+                    lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.TipoDeError.Sintáctico, 0, 0);
                     if (!AnalizadorSintactico.Error)
                     {
                         lblMensaje.ForeColor = Color.Green;
-                        lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.Error.Sintáctico, 0, 0, ' ');
+                        lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.TipoDeError.Sintáctico, 0, 0);
                     }
                     else
                     {
@@ -86,7 +93,7 @@ namespace Autómata_II_SQL
                         int Apuntador = AnalizadorSintactico.Apuntador - 1 < 0 ? 0 : AnalizadorSintactico.Apuntador - 1;
                         int Lin = Convert.ToInt32(AnalizadorLexico.TablaLexica[Apuntador][1]);
                         char Token = AnalizadorLexico.TablaLexica[Apuntador][2][0];
-                        lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.Error.Sintáctico, AnalizadorSintactico.NumError, Lin, Token);
+                        lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.TipoDeError.Sintáctico, AnalizadorSintactico.NumError, Lin);
                     }
                 }
             }

@@ -10,7 +10,6 @@ namespace Autómata_II_SQL
     static class AnalizadorLexico
     {
         private static List<string[]> TL { get; set; }
-        private enum TipoDeSimbolo { Identificador, Delimitador, Operador, Constante, PalabraReservada, Relacional } //NO SE USA
         private static int Indice;
         private static string Acumulador;
         private static int Caracter { get; set; }
@@ -18,6 +17,7 @@ namespace Autómata_II_SQL
         private static int Estado { get; set; }
         private static char Token { get; set; }
         private static int Ultimo { get; set; }
+        private static bool Error { get; set; }
 
         public static int NoLinea { get; set; }
         public static string[][] TablaLexica { get { return TL.ToArray(); } }
@@ -83,7 +83,7 @@ namespace Autómata_II_SQL
             Caracter = NoLinea = 1;
             Contador = Estado = 0;
             int Ultimo = Cadena.Length;
-            bool Error = false;
+            Error = false;
             while (Contador < Ultimo && !Error)
             {
                 Token = Cadena[Contador];
@@ -273,6 +273,8 @@ namespace Autómata_II_SQL
                         }
                         break;
                     case 9:
+                        ModuloErrores.TipoError = ModuloErrores.TipoDeError.Léxico;
+                        ModuloErrores.Linea = NoLinea;
                         Error = true;
                         break;
                 }
@@ -309,9 +311,20 @@ namespace Autómata_II_SQL
 
         private static void AgregarTL(string No, string Linea, string Token, string Tipo, string Codigo)
         {
-            TL.Add(new string[] { No, Linea, Token, Tipo, Codigo });
-            Acumulador = "";
-            Caracter++;
+            if (AnalizadorSemantico.TablaRepetida(Acumulador))
+            {
+                ModuloErrores.TipoError = ModuloErrores.TipoDeError.Semántico;
+                ModuloErrores.Linea = NoLinea;
+                ModuloErrores.NoError = 5;
+                ModuloErrores.PalabraSemanticoError = Acumulador;
+                Error = true;
+            }
+            else
+            {
+                TL.Add(new string[] { No, Linea, Token, Tipo, Codigo });
+                Acumulador = "";
+                Caracter++;
+            }
         }
 
         private static void AgregarPalabraTL()

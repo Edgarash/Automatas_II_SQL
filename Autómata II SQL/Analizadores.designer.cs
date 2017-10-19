@@ -32,6 +32,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Analizadores));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -63,6 +64,12 @@
             this.TablaLexica = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.X = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.K = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvTablas = new System.Windows.Forms.TabPage();
+            this.dgvTablaTablas = new System.Windows.Forms.DataGridView();
+            this.NoTabla = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NombreTabla = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NoAtributos = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NoRestricciones = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -84,6 +91,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvConstantes)).BeginInit();
             this.Sintactico.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvArbol)).BeginInit();
+            this.dgvTablas.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTablaTablas)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -186,6 +195,7 @@
             this.Tablas.Controls.Add(this.Identificadores);
             this.Tablas.Controls.Add(this.Constantes);
             this.Tablas.Controls.Add(this.Sintactico);
+            this.Tablas.Controls.Add(this.dgvTablas);
             this.Tablas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tablas.Location = new System.Drawing.Point(0, 0);
             this.Tablas.Name = "Tablas";
@@ -465,6 +475,73 @@
             this.K.Name = "K";
             this.K.ReadOnly = true;
             // 
+            // dgvTablas
+            // 
+            this.dgvTablas.Controls.Add(this.dgvTablaTablas);
+            this.dgvTablas.Location = new System.Drawing.Point(4, 32);
+            this.dgvTablas.Name = "dgvTablas";
+            this.dgvTablas.Padding = new System.Windows.Forms.Padding(3);
+            this.dgvTablas.Size = new System.Drawing.Size(389, 492);
+            this.dgvTablas.TabIndex = 4;
+            this.dgvTablas.Text = "Tablas";
+            this.dgvTablas.UseVisualStyleBackColor = true;
+            // 
+            // dgvTablaTablas
+            // 
+            this.dgvTablaTablas.AllowUserToAddRows = false;
+            this.dgvTablaTablas.AllowUserToDeleteRows = false;
+            this.dgvTablaTablas.AllowUserToResizeRows = false;
+            this.dgvTablaTablas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvTablaTablas.BackgroundColor = System.Drawing.Color.White;
+            this.dgvTablaTablas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTablaTablas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.NoTabla,
+            this.NombreTabla,
+            this.NoAtributos,
+            this.NoRestricciones});
+            this.dgvTablaTablas.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTablaTablas.GridColor = System.Drawing.Color.Black;
+            this.dgvTablaTablas.Location = new System.Drawing.Point(3, 3);
+            this.dgvTablaTablas.Name = "dgvTablaTablas";
+            this.dgvTablaTablas.ReadOnly = true;
+            this.dgvTablaTablas.RowHeadersVisible = false;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.dgvTablaTablas.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            this.dgvTablaTablas.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dgvTablaTablas.Size = new System.Drawing.Size(383, 486);
+            this.dgvTablaTablas.TabIndex = 101;
+            this.dgvTablaTablas.TabStop = false;
+            // 
+            // NoTabla
+            // 
+            this.NoTabla.HeaderText = "#Tabla";
+            this.NoTabla.Name = "NoTabla";
+            this.NoTabla.ReadOnly = true;
+            // 
+            // NombreTabla
+            // 
+            this.NombreTabla.FillWeight = 300F;
+            this.NombreTabla.HeaderText = "Nombre";
+            this.NombreTabla.Name = "NombreTabla";
+            this.NombreTabla.ReadOnly = true;
+            // 
+            // NoAtributos
+            // 
+            this.NoAtributos.HeaderText = "#Atributos";
+            this.NoAtributos.Name = "NoAtributos";
+            this.NoAtributos.ReadOnly = true;
+            // 
+            // NoRestricciones
+            // 
+            this.NoRestricciones.HeaderText = "#Restricciones";
+            this.NoRestricciones.Name = "NoRestricciones";
+            this.NoRestricciones.ReadOnly = true;
+            // 
             // Analizadores
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
@@ -503,6 +580,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvConstantes)).EndInit();
             this.Sintactico.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvArbol)).EndInit();
+            this.dgvTablas.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTablaTablas)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -539,6 +618,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.TabPage dgvTablas;
+        private System.Windows.Forms.DataGridView dgvTablaTablas;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NoTabla;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NombreTabla;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NoAtributos;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NoRestricciones;
     }
 }
 
