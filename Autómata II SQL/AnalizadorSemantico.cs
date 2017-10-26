@@ -49,8 +49,6 @@ namespace Autómata_II_SQL
                 case 702:
                     if (Identificador == "CHAR" || Identificador == "NUMERIC")
                         Atributos[NoAtributos - 2][3] = Identificador;
-                    else
-                        SetError(0, Identificador);
                     break;
                 case 703:
                     Atributos[NoAtributos - 2][4] = Identificador;

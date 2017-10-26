@@ -209,17 +209,11 @@ namespace Autómata_II_SQL
                         }
                         else
                         {
-                            //Modificado para validar tipo de dato, error no necesario?
-                            if (X != "203")
-                            {
-                                ModuloErrores.TipoError = ModuloErrores.TipoDeError.Sintáctico;
-                                ModuloErrores.Error = true;
-                                ModuloErrores.NoError = 7;
-                                ModuloErrores.Linea = Convert.ToInt32(AnalizadorLexico.TablaLexica[Apuntador - 1][1]);
-                                ModuloErrores.PalabraError = ObtenerPrimerosOSiguientes();
-                            }
-                            else
-                                Apuntador++;
+                            ModuloErrores.TipoError = ModuloErrores.TipoDeError.Sintáctico;
+                            ModuloErrores.Error = true;
+                            ModuloErrores.NoError = 7;
+                            ModuloErrores.Linea = Convert.ToInt32(AnalizadorLexico.TablaLexica[Apuntador - 1][1]);
+                            ModuloErrores.PalabraError = ObtenerPrimerosOSiguientes();
                         }
                     }
                 }
