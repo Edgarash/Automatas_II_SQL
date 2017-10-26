@@ -70,7 +70,8 @@
             this.X = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.K = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvTablas = new System.Windows.Forms.TabPage();
-            this.dgvTablaTablas = new ControlesM.KuroDGV();
+            this.dgvTablaTablas = new 
+                ControlesM.KuroDGV();
             this.NoTabla = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NombreTabla = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NoAtributos = new System.Windows.Forms.DataGridViewTextBoxColumn();

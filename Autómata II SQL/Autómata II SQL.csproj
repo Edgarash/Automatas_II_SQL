@@ -53,7 +53,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ControlesM">
-      <HintPath>..\..\ControlesM\ControlesM\bin\Debug\ControlesM.dll</HintPath>
+      <HintPath>.\ControlesM.dll</HintPath>
     </Reference>
     <Reference Include="ScintillaNET">
       <HintPath>..\packages\jacobslusser.ScintillaNET.Signed.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
