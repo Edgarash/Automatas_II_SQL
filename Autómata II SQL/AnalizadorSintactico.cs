@@ -11,20 +11,20 @@ namespace Autómata_II_SQL
         static string[,] TablaSintactica = new string[,]
         {
             /**/{"*", "4","8","10","11","12","13","14","15","16","18","19","20","22","24","25","26","27","50","51","53","54","61","62","72","199","55"},
-            /*200*/{"200", "","","","","","","","","16 17 4 52 202 53 55 201","","","","","","","","","","","","","","","","",""},
+            /*200*/{"200", "","","","","","","","","16 17 4 700 52 202 53 55 201","","","","","","","","","","","","","","","","",""},
             /*201*/{"201", "","","300 55 201","","","","","","200","","","","","","","","211","","","","","","","","99",""},
-            /*202*/{"202", "4 203 52 61 53 204 205","","","","","","","","","","","","","","","","","","","","","","","","",""},
+            /*202*/{"202", "4 701 203 702 52 61 703 53 204 704 205","","","","","","","","","","","","","","","","","","","","","","","","",""},
             /*203*/{"203","","","","","","","","","","18","19","","","","","","","","","","","","","","",""},
             /*204*/{"204","","","","","","","","","","","","20 21","","","","","","99","","99","","","","","",""},
             /*205*/{"205","","","","","","","","","","","",""," ","","","","","50 206","","99","","","","","",""},
             /*206*/{"206","202","","","","","","","","","","","","207","","","","","","","","","","","","",""},
-            /*207*/{"207","","","","","","","","","","","","","22 4 208 52 4 53 209","","","","","","","","","","","","",""},
-            /*208*/{"208","","","","","","","","","","","","","","24 23","25 23 ","","","","","","","","","","",""},
-            /*209*/{"209","","","","","","","","","","","","","","","","26 4 52 4 53 210","","50 207","","99","","","","","",""},
+            /*207*/{"207","","","","","","","","","","","","","22 4 705 208 52 4 707 53 209","","","","","","","","","","","","",""},
+            /*208*/{"208","","","","","","","","","","","","","","24 706 23","25 706 23 ","","","","","","","","","","",""},
+            /*209*/{"209","","","","","","","","","","","","","","","","26 4 708 52 4 709 53 210","","50 207","","99","","","","","",""},
             /*210*/{"210","","","","","","","","","","","","","","","","","","50 207","","99","","","","","",""},
-            /*211*/{"211","","","","","","","","","","","","","","","","","27 28 4 29 52 212 53 55 215","","","","","","","","",""},
+            /*211*/{"211","","","","","","","","","","","","","","","","","27 28 4 708 29 52 212 53 55 215","","","","","","","","",""},
             /*212*/{"212","","","","","","","","","","","","","","","","","","","","","213 214","213 214","","","",""},
-            /*213*/{"213","","","","","","","","","","","","","","","","","","","","","54 62 54 ","61","","","",""},
+            /*213*/{"213","","","","","","","","","","","","","","","","","","","","","54 710 62 711 54 ","61 711","","","",""},
             /*214*/{"214","","","","","","","","","","","","","","","","","","50  212","","99","","","","","",""},
             /*215*/{"215","","","201","","","","","","201","","","","","","","","211","","","","","","","","99","99"},
             /*300*/{"300","","","10 301 11 306 310","","","","","","","","","","","","","","","","","","","","","","",""},
@@ -94,10 +94,7 @@ namespace Autómata_II_SQL
         public static string X { get; set; }
         public static string K { get; set; }
         public static int Apuntador { get; set; }
-        public static bool Error { get; set; }
-        public static int NumError { get; set; }
         public static string Cadena { get; set; }
-        public static string SeEsperaba { get; set; }
         public static List<string[]> Arbol { get; set; }
         public static string[][] ArbolSintactico { get { return Arbol.ToArray(); } }
 
@@ -154,10 +151,10 @@ namespace Autómata_II_SQL
 
         public static void Analizar()
         {
-            SeEsperaba = "";
+            ModuloErrores.PalabraError = "";
             int Xx;
             Arbol = new List<string[]>();
-            Error = false;
+            ModuloErrores.Error = false;
             Pila = "";
             InsertarPila("199");
             InsertarPila("201"); //Insertar Q
@@ -170,41 +167,63 @@ namespace Autómata_II_SQL
                 K = Cadena.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)[Apuntador];
                 AgregarRegistro();
                 Xx = int.Parse(X);
-                if ((Xx >= 4 && Xx <= 90) || (Xx == 199)) //Como saber si x es un terminal porque todos son números :B Debe estar bien hasta aquí
+                if (Xx >= 700)
                 {
-                    if (X == K)
-                    {
-                        Apuntador++;
-                    }
-                    else
-                    {
-                        Error = true;
-                        NumError = TablaDeSimbolos.BuscarBuscando(X);
-                    }
+                    string Identificador = AnalizadorLexico.TablaLexica[Apuntador - 1][2];
+                    if (Identificador == "CONSTANTE")
+                        Identificador = TablaDeSimbolos.BuscarConstante(AnalizadorLexico.TablaLexica[Apuntador - 1][4]);
+                    AnalizadorSemantico.Metodos700(Xx, Identificador);
+                    if (ModuloErrores.Error)
+                        ModuloErrores.Linea = Convert.ToInt32(AnalizadorLexico.TablaLexica[Apuntador - 1][1]);
                 }
                 else
                 {
-                    int t = ObtenerIndiceX();
-                    int p = ObtenerIndiceK();
-                    string temp = t == -1 || p == -1 ? "" : TablaSintactica[t, p];
-                    if (temp != "")
+                    if ((Xx >= 4 && Xx <= 90) || (Xx == 199)) //Como saber si x es un terminal porque todos son números :B Debe estar bien hasta aquí
                     {
-                        if (temp != "99")
+                        if (X == K)
                         {
-                            string[] split = temp.Split(' ');
-                            for (int i = split.Length - 1; i >= 0; i--)
-                                InsertarPila(split[i]);
-                            AgregarRegistro(Pila, "", X, K);
+                            Apuntador++;
+                        }
+                        else
+                        {
+                            ModuloErrores.Error = true;
+                            ModuloErrores.NoError = TablaDeSimbolos.BuscarBuscando(X);
+                            ModuloErrores.TipoError = ModuloErrores.TipoDeError.Sintáctico;
+                            ModuloErrores.Linea = Convert.ToInt32(AnalizadorLexico.TablaLexica[Apuntador - 1][1]);
                         }
                     }
                     else
                     {
-                        Error = true;
-                        NumError = 7;
-                        SeEsperaba = ObtenerPrimerosOSiguientes();
+                        int t = ObtenerIndiceX();
+                        int p = ObtenerIndiceK();
+                        string temp = t == -1 || p == -1 ? "" : TablaSintactica[t, p];
+                        if (temp != "")
+                        {
+                            if (temp != "99")
+                            {
+                                string[] split = temp.Split(' ');
+                                for (int i = split.Length - 1; i >= 0; i--)
+                                    InsertarPila(split[i]);
+                                AgregarRegistro(Pila, "", X, K);
+                            }
+                        }
+                        else
+                        {
+                            //Modificado para validar tipo de dato, error no necesario?
+                            if (X != "203")
+                            {
+                                ModuloErrores.TipoError = ModuloErrores.TipoDeError.Sintáctico;
+                                ModuloErrores.Error = true;
+                                ModuloErrores.NoError = 7;
+                                ModuloErrores.Linea = Convert.ToInt32(AnalizadorLexico.TablaLexica[Apuntador - 1][1]);
+                                ModuloErrores.PalabraError = ObtenerPrimerosOSiguientes();
+                            }
+                            else
+                                Apuntador++;
+                        }
                     }
                 }
-            } while (X != "199" && !Error);
+            }while (X != "199" && !ModuloErrores.Error);
         }
 
         private static void AgregarRegistro()

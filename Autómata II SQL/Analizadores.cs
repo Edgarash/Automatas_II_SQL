@@ -42,7 +42,10 @@ namespace Autómata_II_SQL
             dgvIdentificadores.Rows.Clear();
             dgvArbol.Rows.Clear();
             dgvTablaTablas.Rows.Clear();
+            dgvAtributos.Rows.Clear();
+            dgvRestricciones.Rows.Clear();
             AnalizadorSemantico.InicializarSemantico();
+            ModuloErrores.Error = false;
             //Verificando Cadena Vacía
             if (!string.IsNullOrWhiteSpace(Cadena))
             {
@@ -87,29 +90,33 @@ namespace Autómata_II_SQL
                 for (int i = 0; i < Tablas.Length; i++)
                     for (int j = 0; j < Tablas[i].Length; j++)
                         dgvTablaTablas[j, i].Value = Tablas[i][j];
+                //Tabla Atributos
+                string[][] Atributos = AnalizadorSemantico.Atributos.ToArray();
+                dgvAtributos.RowCount = Atributos.Length;
+                for (int i = 0; i < Atributos.Length; i++)
+                    for (int j = 0; j < Atributos[i].Length; j++)
+                        dgvAtributos[j, i].Value = Atributos[i][j];
+                //Tabla Restricciones
+                string[][] Restricciones = AnalizadorSemantico.Restricciones.ToArray();
+                dgvRestricciones.RowCount = Restricciones.Length;
+                for (int i = 0; i < Restricciones.Length; i++)
+                    for (int j = 0; j < Restricciones[i].Length; j++)
+                        dgvRestricciones[j, i].Value = Restricciones[i][j];
                 //Mensaje Error
                 if (ModuloErrores.Error)
                 {
                     lblMensaje.ForeColor = Color.Red;
                     lblMensaje.Text = ModuloErrores.MensajeError();
+                    if (ModuloErrores.TipoError == ModuloErrores.TipoDeError.Sintáctico && ModuloErrores.NoError == 0)
+                    {
+                        lblMensaje.ForeColor = Color.Green;
+                        lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.TipoDeError.Sintáctico, 0, 0);
+                    }
                 }
                 else
                 {
                     lblMensaje.ForeColor = Color.Green;
                     lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.TipoDeError.Sintáctico, 0, 0);
-                    if (!AnalizadorSintactico.Error)
-                    {
-                        lblMensaje.ForeColor = Color.Green;
-                        lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.TipoDeError.Sintáctico, 0, 0);
-                    }
-                    else
-                    {
-                        lblMensaje.ForeColor = Color.Red;
-                        int Apuntador = AnalizadorSintactico.Apuntador - 1 < 0 ? 0 : AnalizadorSintactico.Apuntador - 1;
-                        int Lin = Convert.ToInt32(AnalizadorLexico.TablaLexica[Apuntador][1]);
-                        char Token = AnalizadorLexico.TablaLexica[Apuntador][2][0];
-                        lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.TipoDeError.Sintáctico, AnalizadorSintactico.NumError, Lin);
-                    }
                 }
                 lblTiempo.Text = TiempoTardado;
             }

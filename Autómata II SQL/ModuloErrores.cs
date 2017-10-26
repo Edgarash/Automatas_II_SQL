@@ -15,7 +15,7 @@ namespace Autómata_II_SQL
         public static int NoError { get; set; }
         public static int Linea { get; set; }
 
-        public static string PalabraSemanticoError { get; set; }
+        public static string PalabraError { get; set; }
 
         static string[][,] Errores = new string[][,]
         {
@@ -64,11 +64,11 @@ namespace Autómata_II_SQL
                     break;
                 case TipoDeError.Sintáctico:
                     Cadena = "2:" + Errores[1][0, 1];
-                    Cadena+= (Numero_Error == 0 ? " " : " Error en Línea " + Linea + ": ") + Errores[1][Numero_Error, 2] + (Numero_Error == 7 ? AnalizadorSintactico.SeEsperaba : "");
+                    Cadena+= (Numero_Error == 0 ? " " : " Error en Línea " + Linea + ": ") + Errores[1][Numero_Error, 2] + (Numero_Error == 7 ? PalabraError : "");
                     break;
                 case TipoDeError.Semántico:
                     Cadena = "3:" + Errores[2][0, 1];
-                    Cadena += " Error en Línea " + Linea + ": " + Errores[2][Numero_Error, 2] + " \"" + PalabraSemanticoError + "\"";
+                    Cadena += " Error en Línea " + Linea + ": " + Errores[2][Numero_Error, 2] + " \"" + PalabraError + "\"";
                     break;
             }
             return Cadena;

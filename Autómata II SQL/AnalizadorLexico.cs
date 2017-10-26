@@ -311,20 +311,9 @@ namespace Autómata_II_SQL
 
         private static void AgregarTL(string No, string Linea, string Token, string Tipo, string Codigo)
         {
-            if (AnalizadorSemantico.TablaRepetida(Acumulador))
-            {
-                ModuloErrores.TipoError = ModuloErrores.TipoDeError.Semántico;
-                ModuloErrores.Linea = NoLinea;
-                ModuloErrores.NoError = 5;
-                ModuloErrores.PalabraSemanticoError = Acumulador;
-                Error = true;
-            }
-            else
-            {
                 TL.Add(new string[] { No, Linea, Token, Tipo, Codigo });
                 Acumulador = "";
                 Caracter++;
-            }
         }
 
         private static void AgregarPalabraTL()
