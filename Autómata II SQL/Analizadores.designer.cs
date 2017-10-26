@@ -126,9 +126,10 @@
             // 
             // lblMensaje
             // 
+            this.lblMensaje.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblMensaje.AutoSize = true;
             this.lblMensaje.ForeColor = System.Drawing.Color.Black;
-            this.lblMensaje.Location = new System.Drawing.Point(3, 299);
+            this.lblMensaje.Location = new System.Drawing.Point(3, 306);
             this.lblMensaje.Name = "lblMensaje";
             this.lblMensaje.Size = new System.Drawing.Size(63, 23);
             this.lblMensaje.TabIndex = 100;
@@ -148,7 +149,7 @@
             this.Tablas.Name = "Tablas";
             this.tlpDiseño.SetRowSpan(this.Tablas, 2);
             this.Tablas.SelectedIndex = 0;
-            this.Tablas.Size = new System.Drawing.Size(441, 293);
+            this.Tablas.Size = new System.Drawing.Size(441, 273);
             this.Tablas.TabIndex = 1;
             // 
             // Lexico
@@ -485,7 +486,7 @@
             this.dgvTablas.Location = new System.Drawing.Point(4, 32);
             this.dgvTablas.Name = "dgvTablas";
             this.dgvTablas.Padding = new System.Windows.Forms.Padding(3);
-            this.dgvTablas.Size = new System.Drawing.Size(433, 257);
+            this.dgvTablas.Size = new System.Drawing.Size(433, 237);
             this.dgvTablas.TabIndex = 4;
             this.dgvTablas.Text = "Tablas";
             this.dgvTablas.UseVisualStyleBackColor = true;
@@ -531,7 +532,7 @@
             this.dgvTablaTablas.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.SystemColors.Window;
             this.dgvTablaTablas.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
             this.dgvTablaTablas.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvTablaTablas.Size = new System.Drawing.Size(427, 251);
+            this.dgvTablaTablas.Size = new System.Drawing.Size(427, 231);
             this.dgvTablaTablas.TabIndex = 101;
             this.dgvTablaTablas.TabStop = false;
             // 
@@ -763,7 +764,7 @@
             this.tlpDiseño.RowCount = 3;
             this.tlpDiseño.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpDiseño.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpDiseño.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tlpDiseño.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlpDiseño.Size = new System.Drawing.Size(894, 329);
             this.tlpDiseño.TabIndex = 2;
             this.tlpDiseño.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tlpDiseño_MouseClick);
@@ -774,9 +775,10 @@
             // 
             // lblTiempo
             // 
+            this.lblTiempo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTiempo.AutoSize = true;
             this.lblTiempo.ForeColor = System.Drawing.Color.Black;
-            this.lblTiempo.Location = new System.Drawing.Point(450, 299);
+            this.lblTiempo.Location = new System.Drawing.Point(450, 306);
             this.lblTiempo.Name = "lblTiempo";
             this.lblTiempo.Size = new System.Drawing.Size(163, 23);
             this.lblTiempo.TabIndex = 101;
@@ -794,7 +796,7 @@
             this.SourceCode.Margins.Left = 5;
             this.SourceCode.Margins.Right = 0;
             this.SourceCode.Name = "SourceCode";
-            this.SourceCode.Size = new System.Drawing.Size(441, 263);
+            this.SourceCode.Size = new System.Drawing.Size(441, 243);
             this.SourceCode.TabIndex = 0;
             this.SourceCode.Zoom = 4;
             this.SourceCode.Delete += new System.EventHandler<ScintillaNET.ModificationEventArgs>(this.SourceCode_Delete);

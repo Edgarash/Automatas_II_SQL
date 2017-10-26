@@ -16,6 +16,7 @@ namespace Autómata_II_SQL
         public static int Linea { get; set; }
 
         public static string PalabraError { get; set; }
+        public static string PalabraError2 { get; set; }
 
         static string[][,] Errores = new string[][,]
         {
@@ -33,19 +34,19 @@ namespace Autómata_II_SQL
             },
             new string[,]
             {
-                {"3", "301", "El tipo de dato no existe" },
-                {"3", "302", "El nombre de atributo se especifica más de una vez" },
-                {"3", "303", "El nombre de atributo no existe en la tabla" },
-                {"3", "304", "El nombre de restricción está duplicado" },
-                {"3", "305", "Se hace referencia a un atributo no válido" },
-                {"3", "306", "El nombre de atributo está duplicado" },
-                {"3", "307", "Los valores especificados no corresponden" },
-                {"3", "308", "Los datos de cadena o binarios se truncarían" },
-                {"3", "311", "El nombre de atributo no es válido" },
-                {"3", "312", "El nombre de atributo es ambigüo" },
-                {"3", "313", "Conversión de tipo de dato" },
-                {"3", "314", "Nombre de objeto inválido" },
-                {"3", "315", "Identificador inválido" },
+                {"3", "301", "", "" },
+                {"3", "302", "El nombre de atributo ", " se especifica más de una vez" },
+                {"3", "303", "El nombre de atributo ", " no existe en la tabla" },
+                {"3", "304", "El nombre de restricción ", " está duplicado" },
+                {"3", "305", "Se hace referencia a ", " un atributo no válido" },
+                {"3", "306", "El nombre de atributo ", " está duplicado" },
+                {"3", "307", "Los valores especificados no corresponden", "" },
+                {"3", "308", "Los datos de cadena o binarios se truncarían", "" },
+                {"3", "311", "El nombre de atributo ", " no es válido" },
+                {"3", "312", "El nombre de atributo ", " es ambigüo" },
+                {"3", "313", "Conversión de tipo de dato", "" },
+                {"3", "314", "Nombre de objeto inválido", "" },
+                {"3", "315", "Identificador inválido", ""},
             }
         };
 
@@ -67,8 +68,8 @@ namespace Autómata_II_SQL
                     Cadena+= (Numero_Error == 0 ? " " : " Error en Línea " + Linea + ": ") + Errores[1][Numero_Error, 2] + (Numero_Error == 7 ? PalabraError : "");
                     break;
                 case TipoDeError.Semántico:
-                    Cadena = "3:" + Errores[2][0, 1];
-                    Cadena += " Error en Línea " + Linea + ": " + Errores[2][Numero_Error, 2] + " \"" + PalabraError + "\"";
+                    Cadena = "3:" + Errores[2][NoError, 1];
+                    Cadena += " Error en Línea " + Linea + ": " + Errores[2][Numero_Error, 2] + "\"" + PalabraError + "\"" + Errores[2][Numero_Error, 3] + (PalabraError2 == "" ? "" : " \"" + PalabraError2 + "\"");
                     break;
             }
             return Cadena;
