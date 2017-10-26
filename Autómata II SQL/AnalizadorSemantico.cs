@@ -48,8 +48,8 @@ namespace Autómata_II_SQL
                             Repetido = true;
                         else
                             Tablas.Add(new string[] { "" + NoTabla++, Identificador, "", "" });
-                        Create = Table = false;
                     }
+                    Create = Table = false;
                 }
             }
             return Repetido;
