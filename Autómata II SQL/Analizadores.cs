@@ -8,6 +8,16 @@ namespace Autómata_II_SQL
     public partial class Analizadores : Form
     {
         static Timer Retraso { get; set; }
+        static DateTime HoraInicial { get; set; }
+        static DateTime HoraFinal { get; set; }
+        static string TiempoTardado
+        {
+            get
+            {
+                TimeSpan x = HoraFinal - HoraInicial;
+                return x.ToString();
+            }
+        }
 
         public Analizadores()
         {
@@ -16,6 +26,7 @@ namespace Autómata_II_SQL
             Retraso = new Timer();
             Retraso.Tick += Retraso_Tick;
             Retraso.Interval = 1000;
+            Diseñando = false;
         }
 
         private void Retraso_Tick(object sender, EventArgs e)
@@ -30,13 +41,19 @@ namespace Autómata_II_SQL
             dgvLexico.Rows.Clear();
             dgvIdentificadores.Rows.Clear();
             dgvArbol.Rows.Clear();
+            dgvTablaTablas.Rows.Clear();
             AnalizadorSemantico.InicializarSemantico();
-
             //Verificando Cadena Vacía
             if (!string.IsNullOrWhiteSpace(Cadena))
             {
+                //Empieza Conteo Tiempo
+                HoraInicial = DateTime.Now;
                 //Análisis Léxico
                 ModuloErrores.Error = AnalizadorLexico.Analizar(Cadena.ToUpper());
+                //Analizador Sintactico
+                if (!ModuloErrores.Error)
+                    AnalizadorSintactico.Analizar();
+                HoraFinal = DateTime.Now;
                 //Tabla Léxica
                 string[][] TablaLexica = AnalizadorLexico.TablaLexica;
                 dgvLexico.RowCount = TablaLexica.Length;
@@ -55,23 +72,21 @@ namespace Autómata_II_SQL
                 for (int i = 0; i < Constantes.Length; i++)
                     for (int j = 0; j < Constantes[0].Length; j++)
                         dgvConstantes[j, i].Value = Constantes[i][j];
-                //Tabla Tablas
-                string[][] Tablas = AnalizadorSemantico.Tablas.ToArray();
-                dgvTablaTablas.RowCount = Tablas.Length;
-                for (int i = 0; i < Tablas.Length; i++)
-                    for (int j = 0; j < Tablas[i].Length; j++)
-                        dgvTablaTablas[j, i].Value = Tablas[i][j];
-                //Analizador Sintactico
-                if (!ModuloErrores.Error)
+                //Tabla Arbol Sintactico
+                if (AnalizadorSintactico.Arbol?.Count > 0)
                 {
-                    AnalizadorSintactico.Analizar();
-                    //Tabla Arbol Sintactico
                     string[][] Arbol = AnalizadorSintactico.ArbolSintactico;
                     dgvArbol.RowCount = Arbol.Length;
                     for (int i = 0; i < Arbol.Length; i++)
                         for (int j = 0; j < Arbol[i].Length; j++)
                             dgvArbol[j, i].Value = Arbol[i][j];
                 }
+                //Tabla Tablas
+                string[][] Tablas = AnalizadorSemantico.Tablas.ToArray();
+                dgvTablaTablas.RowCount = Tablas.Length;
+                for (int i = 0; i < Tablas.Length; i++)
+                    for (int j = 0; j < Tablas[i].Length; j++)
+                        dgvTablaTablas[j, i].Value = Tablas[i][j];
                 //Mensaje Error
                 if (ModuloErrores.Error)
                 {
@@ -96,9 +111,13 @@ namespace Autómata_II_SQL
                         lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.TipoDeError.Sintáctico, AnalizadorSintactico.NumError, Lin);
                     }
                 }
+                lblTiempo.Text = TiempoTardado;
             }
             else
+            {
                 lblMensaje.Text = "";
+                lblTiempo.Text = "";
+            }
         }
 
         private void SourceCode_TextChanged(object sender, EventArgs e)
@@ -234,5 +253,53 @@ namespace Autómata_II_SQL
         {
             e.KeyChar = char.ToUpper(e.KeyChar);
         }
+
+
+        #region Columna Movible
+
+        static bool Diseñando { get; set; }
+        static bool Entro { get; set; }
+        static float XXX { get; set; }
+        private void tlpDiseño_MouseMove(object sender, MouseEventArgs e)
+        {
+            int Pos1 = SourceCode.Location.X + SourceCode.Width;
+            int Pos2 = Tablas.Location.X;
+            if (Pos1 <= e.X && Pos2 > e.X)
+            {
+                Entro = true;
+                tlpDiseño.Cursor = Cursors.VSplit;
+            }
+            else
+            {
+                if (!Diseñando)
+                {
+                    Entro = false;
+                    tlpDiseño.Cursor = Cursors.Default;
+                }
+            }
+            if (Diseñando)
+            {
+                XXX = (e.X / (float)Width) * 100f;
+                tlpDiseño.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, XXX);
+                tlpDiseño.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 100 - XXX);
+            }
+        }
+
+        private void tlpDiseño_MouseClick(object sender, MouseEventArgs e)
+        {
+            Diseñando = e.Button == MouseButtons.Left;
+        }
+
+        private void tlpDiseño_MouseUp(object sender, MouseEventArgs e)
+        {
+            Diseñando = false;
+        }
+
+        private void tlpDiseño_MouseLeave(object sender, EventArgs e)
+        {
+            tlpDiseño.Cursor = Cursors.Default;
+        }
+
+        #endregion
     }
 }

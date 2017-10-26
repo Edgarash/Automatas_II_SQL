@@ -34,11 +34,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Analizadores));
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.lblFuente = new System.Windows.Forms.Label();
-            this.SourceCode = new ScintillaNET.Scintilla();
             this.lblMensaje = new System.Windows.Forms.Label();
             this.Tablas = new System.Windows.Forms.TabControl();
             this.Lexico = new System.Windows.Forms.TabPage();
@@ -70,18 +66,9 @@
             this.NombreTabla = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NoAtributos = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NoRestricciones = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
-            this.splitContainer3.Panel1.SuspendLayout();
-            this.splitContainer3.Panel2.SuspendLayout();
-            this.splitContainer3.SuspendLayout();
+            this.tlpDiseño = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTiempo = new System.Windows.Forms.Label();
+            this.SourceCode = new ScintillaNET.Scintilla();
             this.Tablas.SuspendLayout();
             this.Lexico.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLexico)).BeginInit();
@@ -93,101 +80,28 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvArbol)).BeginInit();
             this.dgvTablas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTablaTablas)).BeginInit();
+            this.tlpDiseño.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.Tablas);
-            this.splitContainer1.Size = new System.Drawing.Size(1008, 528);
-            this.splitContainer1.SplitterDistance = 607;
-            this.splitContainer1.TabIndex = 0;
-            // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.splitContainer3);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.lblMensaje);
-            this.splitContainer2.Size = new System.Drawing.Size(607, 528);
-            this.splitContainer2.SplitterDistance = 496;
-            this.splitContainer2.TabIndex = 9;
-            // 
-            // splitContainer3
-            // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Name = "splitContainer3";
-            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer3.Panel1
-            // 
-            this.splitContainer3.Panel1.Controls.Add(this.lblFuente);
-            // 
-            // splitContainer3.Panel2
-            // 
-            this.splitContainer3.Panel2.Controls.Add(this.SourceCode);
-            this.splitContainer3.Size = new System.Drawing.Size(607, 496);
-            this.splitContainer3.SplitterDistance = 25;
-            this.splitContainer3.TabIndex = 0;
             // 
             // lblFuente
             // 
             this.lblFuente.AutoSize = true;
-            this.lblFuente.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblFuente.ForeColor = System.Drawing.Color.Black;
-            this.lblFuente.Location = new System.Drawing.Point(0, 0);
+            this.lblFuente.Location = new System.Drawing.Point(3, 0);
             this.lblFuente.Name = "lblFuente";
             this.lblFuente.Size = new System.Drawing.Size(112, 23);
             this.lblFuente.TabIndex = 100;
             this.lblFuente.Text = "Código Fuente";
             // 
-            // SourceCode
-            // 
-            this.SourceCode.AnnotationVisible = ScintillaNET.Annotation.Standard;
-            this.SourceCode.CaretLineBackColor = System.Drawing.Color.Silver;
-            this.SourceCode.CaretLineBackColorAlpha = 75;
-            this.SourceCode.CaretLineVisible = true;
-            this.SourceCode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SourceCode.Lexer = ScintillaNET.Lexer.Sql;
-            this.SourceCode.Location = new System.Drawing.Point(0, 0);
-            this.SourceCode.Margins.Left = 5;
-            this.SourceCode.Margins.Right = 0;
-            this.SourceCode.Name = "SourceCode";
-            this.SourceCode.Size = new System.Drawing.Size(607, 467);
-            this.SourceCode.TabIndex = 0;
-            this.SourceCode.Zoom = 4;
-            this.SourceCode.Delete += new System.EventHandler<ScintillaNET.ModificationEventArgs>(this.SourceCode_Delete);
-            this.SourceCode.Insert += new System.EventHandler<ScintillaNET.ModificationEventArgs>(this.SourceCode_Insert);
-            this.SourceCode.UpdateUI += new System.EventHandler<ScintillaNET.UpdateUIEventArgs>(this.SourceCode_UpdateUI);
-            this.SourceCode.TextChanged += new System.EventHandler(this.SourceCode_TextChanged);
-            this.SourceCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SourceCode_KeyPress);
-            // 
             // lblMensaje
             // 
             this.lblMensaje.AutoSize = true;
-            this.lblMensaje.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblMensaje.Location = new System.Drawing.Point(0, 0);
+            this.lblMensaje.ForeColor = System.Drawing.Color.Black;
+            this.lblMensaje.Location = new System.Drawing.Point(3, 299);
             this.lblMensaje.Name = "lblMensaje";
-            this.lblMensaje.Size = new System.Drawing.Size(0, 23);
+            this.lblMensaje.Size = new System.Drawing.Size(63, 23);
             this.lblMensaje.TabIndex = 100;
+            this.lblMensaje.Text = "Holiwis";
             // 
             // Tablas
             // 
@@ -197,10 +111,11 @@
             this.Tablas.Controls.Add(this.Sintactico);
             this.Tablas.Controls.Add(this.dgvTablas);
             this.Tablas.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Tablas.Location = new System.Drawing.Point(0, 0);
+            this.Tablas.Location = new System.Drawing.Point(450, 3);
             this.Tablas.Name = "Tablas";
+            this.tlpDiseño.SetRowSpan(this.Tablas, 2);
             this.Tablas.SelectedIndex = 0;
-            this.Tablas.Size = new System.Drawing.Size(397, 528);
+            this.Tablas.Size = new System.Drawing.Size(441, 293);
             this.Tablas.TabIndex = 1;
             // 
             // Lexico
@@ -209,7 +124,7 @@
             this.Lexico.Location = new System.Drawing.Point(4, 32);
             this.Lexico.Name = "Lexico";
             this.Lexico.Padding = new System.Windows.Forms.Padding(3);
-            this.Lexico.Size = new System.Drawing.Size(389, 492);
+            this.Lexico.Size = new System.Drawing.Size(433, 257);
             this.Lexico.TabIndex = 0;
             this.Lexico.Text = "Léxico";
             this.Lexico.UseVisualStyleBackColor = true;
@@ -241,7 +156,7 @@
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.dgvLexico.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvLexico.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvLexico.Size = new System.Drawing.Size(383, 486);
+            this.dgvLexico.Size = new System.Drawing.Size(427, 251);
             this.dgvLexico.TabIndex = 100;
             this.dgvLexico.TabStop = false;
             // 
@@ -284,10 +199,10 @@
             // 
             this.Identificadores.Controls.Add(this.dgvIdentificadores);
             this.Identificadores.ForeColor = System.Drawing.Color.White;
-            this.Identificadores.Location = new System.Drawing.Point(4, 22);
+            this.Identificadores.Location = new System.Drawing.Point(4, 32);
             this.Identificadores.Name = "Identificadores";
             this.Identificadores.Padding = new System.Windows.Forms.Padding(3);
-            this.Identificadores.Size = new System.Drawing.Size(389, 502);
+            this.Identificadores.Size = new System.Drawing.Size(433, 257);
             this.Identificadores.TabIndex = 1;
             this.Identificadores.Text = "Identificadores";
             this.Identificadores.UseVisualStyleBackColor = true;
@@ -317,7 +232,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.dgvIdentificadores.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvIdentificadores.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvIdentificadores.Size = new System.Drawing.Size(383, 496);
+            this.dgvIdentificadores.Size = new System.Drawing.Size(427, 251);
             this.dgvIdentificadores.TabIndex = 100;
             this.dgvIdentificadores.TabStop = false;
             // 
@@ -346,10 +261,10 @@
             // Constantes
             // 
             this.Constantes.Controls.Add(this.dgvConstantes);
-            this.Constantes.Location = new System.Drawing.Point(4, 22);
+            this.Constantes.Location = new System.Drawing.Point(4, 32);
             this.Constantes.Name = "Constantes";
             this.Constantes.Padding = new System.Windows.Forms.Padding(3);
-            this.Constantes.Size = new System.Drawing.Size(389, 502);
+            this.Constantes.Size = new System.Drawing.Size(433, 257);
             this.Constantes.TabIndex = 3;
             this.Constantes.Text = "Constantes";
             this.Constantes.UseVisualStyleBackColor = true;
@@ -379,7 +294,7 @@
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.dgvConstantes.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvConstantes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvConstantes.Size = new System.Drawing.Size(383, 496);
+            this.dgvConstantes.Size = new System.Drawing.Size(427, 251);
             this.dgvConstantes.TabIndex = 100;
             this.dgvConstantes.TabStop = false;
             // 
@@ -408,10 +323,10 @@
             // Sintactico
             // 
             this.Sintactico.Controls.Add(this.dgvArbol);
-            this.Sintactico.Location = new System.Drawing.Point(4, 22);
+            this.Sintactico.Location = new System.Drawing.Point(4, 32);
             this.Sintactico.Name = "Sintactico";
             this.Sintactico.Padding = new System.Windows.Forms.Padding(3);
-            this.Sintactico.Size = new System.Drawing.Size(389, 502);
+            this.Sintactico.Size = new System.Drawing.Size(433, 257);
             this.Sintactico.TabIndex = 2;
             this.Sintactico.Text = "Sintáctico";
             this.Sintactico.UseVisualStyleBackColor = true;
@@ -443,7 +358,7 @@
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.dgvArbol.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvArbol.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvArbol.Size = new System.Drawing.Size(383, 496);
+            this.dgvArbol.Size = new System.Drawing.Size(427, 251);
             this.dgvArbol.TabIndex = 100;
             this.dgvArbol.TabStop = false;
             // 
@@ -481,7 +396,7 @@
             this.dgvTablas.Location = new System.Drawing.Point(4, 32);
             this.dgvTablas.Name = "dgvTablas";
             this.dgvTablas.Padding = new System.Windows.Forms.Padding(3);
-            this.dgvTablas.Size = new System.Drawing.Size(389, 492);
+            this.dgvTablas.Size = new System.Drawing.Size(433, 257);
             this.dgvTablas.TabIndex = 4;
             this.dgvTablas.Text = "Tablas";
             this.dgvTablas.UseVisualStyleBackColor = true;
@@ -513,7 +428,7 @@
             dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.dgvTablaTablas.RowsDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvTablaTablas.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvTablaTablas.Size = new System.Drawing.Size(383, 486);
+            this.dgvTablaTablas.Size = new System.Drawing.Size(427, 251);
             this.dgvTablaTablas.TabIndex = 101;
             this.dgvTablaTablas.TabStop = false;
             // 
@@ -542,13 +457,69 @@
             this.NoRestricciones.Name = "NoRestricciones";
             this.NoRestricciones.ReadOnly = true;
             // 
+            // tlpDiseño
+            // 
+            this.tlpDiseño.ColumnCount = 2;
+            this.tlpDiseño.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpDiseño.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpDiseño.Controls.Add(this.Tablas, 1, 0);
+            this.tlpDiseño.Controls.Add(this.lblFuente, 0, 0);
+            this.tlpDiseño.Controls.Add(this.lblTiempo, 1, 2);
+            this.tlpDiseño.Controls.Add(this.SourceCode, 0, 1);
+            this.tlpDiseño.Controls.Add(this.lblMensaje, 0, 2);
+            this.tlpDiseño.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpDiseño.Location = new System.Drawing.Point(0, 0);
+            this.tlpDiseño.Name = "tlpDiseño";
+            this.tlpDiseño.RowCount = 3;
+            this.tlpDiseño.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tlpDiseño.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpDiseño.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tlpDiseño.Size = new System.Drawing.Size(894, 329);
+            this.tlpDiseño.TabIndex = 2;
+            this.tlpDiseño.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tlpDiseño_MouseClick);
+            this.tlpDiseño.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tlpDiseño_MouseClick);
+            this.tlpDiseño.MouseLeave += new System.EventHandler(this.tlpDiseño_MouseLeave);
+            this.tlpDiseño.MouseMove += new System.Windows.Forms.MouseEventHandler(this.tlpDiseño_MouseMove);
+            this.tlpDiseño.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tlpDiseño_MouseUp);
+            // 
+            // lblTiempo
+            // 
+            this.lblTiempo.AutoSize = true;
+            this.lblTiempo.ForeColor = System.Drawing.Color.Black;
+            this.lblTiempo.Location = new System.Drawing.Point(450, 299);
+            this.lblTiempo.Name = "lblTiempo";
+            this.lblTiempo.Size = new System.Drawing.Size(163, 23);
+            this.lblTiempo.TabIndex = 101;
+            this.lblTiempo.Text = "Tiempo de Ejecución:";
+            // 
+            // SourceCode
+            // 
+            this.SourceCode.AnnotationVisible = ScintillaNET.Annotation.Standard;
+            this.SourceCode.CaretLineBackColor = System.Drawing.Color.Silver;
+            this.SourceCode.CaretLineBackColorAlpha = 75;
+            this.SourceCode.CaretLineVisible = true;
+            this.SourceCode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SourceCode.Lexer = ScintillaNET.Lexer.Sql;
+            this.SourceCode.Location = new System.Drawing.Point(3, 33);
+            this.SourceCode.Margins.Left = 5;
+            this.SourceCode.Margins.Right = 0;
+            this.SourceCode.Name = "SourceCode";
+            this.SourceCode.Size = new System.Drawing.Size(441, 263);
+            this.SourceCode.TabIndex = 0;
+            this.SourceCode.Zoom = 4;
+            this.SourceCode.Delete += new System.EventHandler<ScintillaNET.ModificationEventArgs>(this.SourceCode_Delete);
+            this.SourceCode.Insert += new System.EventHandler<ScintillaNET.ModificationEventArgs>(this.SourceCode_Insert);
+            this.SourceCode.UpdateUI += new System.EventHandler<ScintillaNET.UpdateUIEventArgs>(this.SourceCode_UpdateUI);
+            this.SourceCode.TextChanged += new System.EventHandler(this.SourceCode_TextChanged);
+            this.SourceCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SourceCode_KeyPress);
+            // 
             // Analizadores
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LavenderBlush;
-            this.ClientSize = new System.Drawing.Size(1008, 528);
-            this.Controls.Add(this.splitContainer1);
+            this.ClientSize = new System.Drawing.Size(894, 329);
+            this.Controls.Add(this.tlpDiseño);
             this.Font = new System.Drawing.Font("Comic Sans MS", 12F);
             this.ForeColor = System.Drawing.Color.White;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -557,20 +528,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Analizadores";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            this.splitContainer2.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            this.splitContainer3.Panel1.ResumeLayout(false);
-            this.splitContainer3.Panel1.PerformLayout();
-            this.splitContainer3.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
-            this.splitContainer3.ResumeLayout(false);
             this.Tablas.ResumeLayout(false);
             this.Lexico.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLexico)).EndInit();
@@ -582,15 +539,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvArbol)).EndInit();
             this.dgvTablas.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTablaTablas)).EndInit();
+            this.tlpDiseño.ResumeLayout(false);
+            this.tlpDiseño.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.SplitContainer splitContainer2;
-        private ScintillaNET.Scintilla SourceCode;
         private System.Windows.Forms.Label lblMensaje;
         private System.Windows.Forms.TabControl Tablas;
         private System.Windows.Forms.TabPage Lexico;
@@ -604,7 +559,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn X;
         private System.Windows.Forms.DataGridViewTextBoxColumn K;
         private System.Windows.Forms.Label lblFuente;
-        private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.TabPage Constantes;
         private System.Windows.Forms.DataGridView dgvConstantes;
         private System.Windows.Forms.DataGridViewTextBoxColumn Nombre;
@@ -624,6 +578,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NombreTabla;
         private System.Windows.Forms.DataGridViewTextBoxColumn NoAtributos;
         private System.Windows.Forms.DataGridViewTextBoxColumn NoRestricciones;
+        private System.Windows.Forms.TableLayoutPanel tlpDiseño;
+        private System.Windows.Forms.Label lblTiempo;
+        private ScintillaNET.Scintilla SourceCode;
     }
 }
 
