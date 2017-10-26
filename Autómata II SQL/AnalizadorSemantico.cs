@@ -18,6 +18,7 @@ namespace Autómata_II_SQL
         private static int AtributosActuales { get; set; }
         private static int RestriccionesActuales { get; set; }
         private static int TablaActual { get; set; }
+        private static string NombreTablaActual { get; set; }
         private static bool Cadena { get; set; }
         private static int Inserting { get; set; }
 
@@ -70,7 +71,7 @@ namespace Autómata_II_SQL
                     if (AtributoEnTabla(Identificador, NoTabla, out Indice))
                         Restricciones[NoRestricciones - 2][4] = (Indice + 1).ToString();
                     else
-                        SetError(2, Identificador);
+                        SetError(2, Identificador, NombreTablaActual);
                     break;
                 case 708:
                     int Tabla;
@@ -88,7 +89,7 @@ namespace Autómata_II_SQL
                     if (AtributoEnTabla(Identificador, TablaActual + 2, out Atributo))
                         Restricciones[NoRestricciones - 2][6] = (Atributo + 1).ToString();
                     else
-                        SetError(2, Identificador);
+                        SetError(2, Identificador, NombreTablaActual);
                     break;
                 case 710:
                     Cadena = true;
@@ -116,10 +117,16 @@ namespace Autómata_II_SQL
 
         private static void SetError(int NoError, string PalabraError)
         {
+            SetError(NoError, PalabraError, "");
+        }
+
+        private static void SetError(int NoError, string PalabraError, string PalabraError2)
+        {
             ModuloErrores.TipoError = ModuloErrores.TipoDeError.Semántico;
             ModuloErrores.Error = true;
             ModuloErrores.NoError = NoError;
             ModuloErrores.PalabraError = PalabraError;
+            ModuloErrores.PalabraError2 = PalabraError2;
         }
 
         private static void AgregarTabla(string Identificador)
@@ -140,6 +147,7 @@ namespace Autómata_II_SQL
             for (int i = 0; i < Tablas.Count && NoTabla == -1; i++)
                 if (Tablas[i][1] == Identificador)
                     NoTabla = i;
+            NombreTablaActual = Identificador;
             return NoTabla != -1;
         }
 
