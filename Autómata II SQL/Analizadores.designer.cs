@@ -70,8 +70,7 @@
             this.X = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.K = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvTablas = new System.Windows.Forms.TabPage();
-            this.dgvTablaTablas = new 
-                ControlesM.KuroDGV();
+            this.dgvTablaTablas = new ControlesM.KuroDGV();
             this.NoTabla = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NombreTabla = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NoAtributos = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -96,6 +95,10 @@
             this.tlpDiseño = new System.Windows.Forms.TableLayoutPanel();
             this.lblTiempo = new System.Windows.Forms.Label();
             this.SourceCode = new ScintillaNET.Scintilla();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.tablasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cargarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.guardarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tablas.SuspendLayout();
             this.Lexico.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLexico)).BeginInit();
@@ -112,6 +115,7 @@
             this.Restricciones.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRestricciones)).BeginInit();
             this.tlpDiseño.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblFuente
@@ -129,7 +133,7 @@
             this.lblMensaje.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblMensaje.AutoSize = true;
             this.lblMensaje.ForeColor = System.Drawing.Color.Black;
-            this.lblMensaje.Location = new System.Drawing.Point(3, 306);
+            this.lblMensaje.Location = new System.Drawing.Point(3, 282);
             this.lblMensaje.Name = "lblMensaje";
             this.lblMensaje.Size = new System.Drawing.Size(63, 23);
             this.lblMensaje.TabIndex = 100;
@@ -149,7 +153,7 @@
             this.Tablas.Name = "Tablas";
             this.tlpDiseño.SetRowSpan(this.Tablas, 2);
             this.Tablas.SelectedIndex = 0;
-            this.Tablas.Size = new System.Drawing.Size(441, 273);
+            this.Tablas.Size = new System.Drawing.Size(441, 249);
             this.Tablas.TabIndex = 1;
             // 
             // Lexico
@@ -158,7 +162,7 @@
             this.Lexico.Location = new System.Drawing.Point(4, 32);
             this.Lexico.Name = "Lexico";
             this.Lexico.Padding = new System.Windows.Forms.Padding(3);
-            this.Lexico.Size = new System.Drawing.Size(433, 257);
+            this.Lexico.Size = new System.Drawing.Size(433, 213);
             this.Lexico.TabIndex = 0;
             this.Lexico.Text = "Léxico";
             this.Lexico.UseVisualStyleBackColor = true;
@@ -204,7 +208,7 @@
             this.dgvLexico.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.SystemColors.Window;
             this.dgvLexico.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
             this.dgvLexico.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvLexico.Size = new System.Drawing.Size(427, 251);
+            this.dgvLexico.Size = new System.Drawing.Size(427, 207);
             this.dgvLexico.TabIndex = 100;
             this.dgvLexico.TabStop = false;
             // 
@@ -250,7 +254,7 @@
             this.Identificadores.Location = new System.Drawing.Point(4, 32);
             this.Identificadores.Name = "Identificadores";
             this.Identificadores.Padding = new System.Windows.Forms.Padding(3);
-            this.Identificadores.Size = new System.Drawing.Size(433, 257);
+            this.Identificadores.Size = new System.Drawing.Size(433, 213);
             this.Identificadores.TabIndex = 1;
             this.Identificadores.Text = "Identificadores";
             this.Identificadores.UseVisualStyleBackColor = true;
@@ -294,7 +298,7 @@
             this.dgvIdentificadores.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.SystemColors.Window;
             this.dgvIdentificadores.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
             this.dgvIdentificadores.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvIdentificadores.Size = new System.Drawing.Size(427, 251);
+            this.dgvIdentificadores.Size = new System.Drawing.Size(427, 207);
             this.dgvIdentificadores.TabIndex = 100;
             this.dgvIdentificadores.TabStop = false;
             // 
@@ -326,7 +330,7 @@
             this.Constantes.Location = new System.Drawing.Point(4, 32);
             this.Constantes.Name = "Constantes";
             this.Constantes.Padding = new System.Windows.Forms.Padding(3);
-            this.Constantes.Size = new System.Drawing.Size(433, 257);
+            this.Constantes.Size = new System.Drawing.Size(433, 213);
             this.Constantes.TabIndex = 3;
             this.Constantes.Text = "Constantes";
             this.Constantes.UseVisualStyleBackColor = true;
@@ -370,7 +374,7 @@
             this.dgvConstantes.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.SystemColors.Window;
             this.dgvConstantes.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
             this.dgvConstantes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvConstantes.Size = new System.Drawing.Size(427, 251);
+            this.dgvConstantes.Size = new System.Drawing.Size(427, 207);
             this.dgvConstantes.TabIndex = 100;
             this.dgvConstantes.TabStop = false;
             // 
@@ -402,7 +406,7 @@
             this.Sintactico.Location = new System.Drawing.Point(4, 32);
             this.Sintactico.Name = "Sintactico";
             this.Sintactico.Padding = new System.Windows.Forms.Padding(3);
-            this.Sintactico.Size = new System.Drawing.Size(433, 257);
+            this.Sintactico.Size = new System.Drawing.Size(433, 213);
             this.Sintactico.TabIndex = 2;
             this.Sintactico.Text = "Sintáctico";
             this.Sintactico.UseVisualStyleBackColor = true;
@@ -448,7 +452,7 @@
             this.dgvArbol.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.SystemColors.Window;
             this.dgvArbol.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
             this.dgvArbol.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvArbol.Size = new System.Drawing.Size(427, 251);
+            this.dgvArbol.Size = new System.Drawing.Size(427, 207);
             this.dgvArbol.TabIndex = 100;
             this.dgvArbol.TabStop = false;
             // 
@@ -486,7 +490,7 @@
             this.dgvTablas.Location = new System.Drawing.Point(4, 32);
             this.dgvTablas.Name = "dgvTablas";
             this.dgvTablas.Padding = new System.Windows.Forms.Padding(3);
-            this.dgvTablas.Size = new System.Drawing.Size(433, 237);
+            this.dgvTablas.Size = new System.Drawing.Size(433, 213);
             this.dgvTablas.TabIndex = 4;
             this.dgvTablas.Text = "Tablas";
             this.dgvTablas.UseVisualStyleBackColor = true;
@@ -532,7 +536,7 @@
             this.dgvTablaTablas.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.SystemColors.Window;
             this.dgvTablaTablas.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
             this.dgvTablaTablas.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvTablaTablas.Size = new System.Drawing.Size(427, 231);
+            this.dgvTablaTablas.Size = new System.Drawing.Size(427, 207);
             this.dgvTablaTablas.TabIndex = 101;
             this.dgvTablaTablas.TabStop = false;
             // 
@@ -567,7 +571,7 @@
             this.Atributos.Location = new System.Drawing.Point(4, 32);
             this.Atributos.Name = "Atributos";
             this.Atributos.Padding = new System.Windows.Forms.Padding(3);
-            this.Atributos.Size = new System.Drawing.Size(433, 257);
+            this.Atributos.Size = new System.Drawing.Size(433, 213);
             this.Atributos.TabIndex = 5;
             this.Atributos.Text = "Atributos";
             this.Atributos.UseVisualStyleBackColor = true;
@@ -611,7 +615,7 @@
             this.dgvAtributos.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
             this.dgvAtributos.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.SystemColors.Window;
             this.dgvAtributos.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
-            this.dgvAtributos.Size = new System.Drawing.Size(427, 251);
+            this.dgvAtributos.Size = new System.Drawing.Size(427, 207);
             this.dgvAtributos.TabIndex = 0;
             this.dgvAtributos.TabStop = false;
             // 
@@ -657,7 +661,7 @@
             this.Restricciones.Location = new System.Drawing.Point(4, 32);
             this.Restricciones.Name = "Restricciones";
             this.Restricciones.Padding = new System.Windows.Forms.Padding(3);
-            this.Restricciones.Size = new System.Drawing.Size(433, 257);
+            this.Restricciones.Size = new System.Drawing.Size(433, 213);
             this.Restricciones.TabIndex = 6;
             this.Restricciones.Text = "Restricciones";
             this.Restricciones.UseVisualStyleBackColor = true;
@@ -702,7 +706,7 @@
             this.dgvRestricciones.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
             this.dgvRestricciones.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.SystemColors.Window;
             this.dgvRestricciones.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
-            this.dgvRestricciones.Size = new System.Drawing.Size(427, 251);
+            this.dgvRestricciones.Size = new System.Drawing.Size(427, 207);
             this.dgvRestricciones.TabIndex = 0;
             this.dgvRestricciones.TabStop = false;
             // 
@@ -759,13 +763,13 @@
             this.tlpDiseño.Controls.Add(this.SourceCode, 0, 1);
             this.tlpDiseño.Controls.Add(this.lblMensaje, 0, 2);
             this.tlpDiseño.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpDiseño.Location = new System.Drawing.Point(0, 0);
+            this.tlpDiseño.Location = new System.Drawing.Point(0, 24);
             this.tlpDiseño.Name = "tlpDiseño";
             this.tlpDiseño.RowCount = 3;
             this.tlpDiseño.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlpDiseño.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpDiseño.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tlpDiseño.Size = new System.Drawing.Size(894, 329);
+            this.tlpDiseño.Size = new System.Drawing.Size(894, 305);
             this.tlpDiseño.TabIndex = 2;
             this.tlpDiseño.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tlpDiseño_MouseClick);
             this.tlpDiseño.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tlpDiseño_MouseClick);
@@ -778,7 +782,7 @@
             this.lblTiempo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTiempo.AutoSize = true;
             this.lblTiempo.ForeColor = System.Drawing.Color.Black;
-            this.lblTiempo.Location = new System.Drawing.Point(450, 306);
+            this.lblTiempo.Location = new System.Drawing.Point(450, 282);
             this.lblTiempo.Name = "lblTiempo";
             this.lblTiempo.Size = new System.Drawing.Size(163, 23);
             this.lblTiempo.TabIndex = 101;
@@ -796,7 +800,7 @@
             this.SourceCode.Margins.Left = 5;
             this.SourceCode.Margins.Right = 0;
             this.SourceCode.Name = "SourceCode";
-            this.SourceCode.Size = new System.Drawing.Size(441, 243);
+            this.SourceCode.Size = new System.Drawing.Size(441, 219);
             this.SourceCode.TabIndex = 0;
             this.SourceCode.Zoom = 4;
             this.SourceCode.Delete += new System.EventHandler<ScintillaNET.ModificationEventArgs>(this.SourceCode_Delete);
@@ -805,6 +809,39 @@
             this.SourceCode.TextChanged += new System.EventHandler(this.SourceCode_TextChanged);
             this.SourceCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SourceCode_KeyPress);
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tablasToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(894, 24);
+            this.menuStrip1.TabIndex = 3;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // tablasToolStripMenuItem
+            // 
+            this.tablasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cargarToolStripMenuItem,
+            this.guardarToolStripMenuItem});
+            this.tablasToolStripMenuItem.Name = "tablasToolStripMenuItem";
+            this.tablasToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.tablasToolStripMenuItem.Text = "Tablas";
+            // 
+            // cargarToolStripMenuItem
+            // 
+            this.cargarToolStripMenuItem.Name = "cargarToolStripMenuItem";
+            this.cargarToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cargarToolStripMenuItem.Text = "Cargar";
+            this.cargarToolStripMenuItem.Click += new System.EventHandler(this.cargarToolStripMenuItem_Click);
+            // 
+            // guardarToolStripMenuItem
+            // 
+            this.guardarToolStripMenuItem.Name = "guardarToolStripMenuItem";
+            this.guardarToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.guardarToolStripMenuItem.Text = "Guardar";
+            this.guardarToolStripMenuItem.Click += new System.EventHandler(this.guardarToolStripMenuItem_Click);
+            // 
             // Analizadores
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
@@ -812,9 +849,11 @@
             this.BackColor = System.Drawing.Color.LavenderBlush;
             this.ClientSize = new System.Drawing.Size(894, 329);
             this.Controls.Add(this.tlpDiseño);
+            this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Comic Sans MS", 12F);
             this.ForeColor = System.Drawing.Color.White;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "Analizadores";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -837,7 +876,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvRestricciones)).EndInit();
             this.tlpDiseño.ResumeLayout(false);
             this.tlpDiseño.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -894,6 +936,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn AtributoAso;
         private System.Windows.Forms.DataGridViewTextBoxColumn TablaRestriccion;
         private System.Windows.Forms.DataGridViewTextBoxColumn AtributoRestriccion;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem tablasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cargarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem guardarToolStripMenuItem;
     }
 }
 

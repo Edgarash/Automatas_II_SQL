@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -106,7 +108,7 @@ namespace Autómata_II_SQL
                     }
                     else
                     {
-                        string Cadenita = "No se puede asignarle el valor " + Identificador + " al campo " + NombreCampo;
+                        string Cadenita = "No se puede asignarle el valor " + (Cadena? "'" : "") + Identificador + (Cadena ? "'" : "") + " al campo " + NombreCampo;
                         SetError(6, Cadenita);
                     }
                     Inserting++;
@@ -210,6 +212,85 @@ namespace Autómata_II_SQL
                     Encontrado = true;
                 }
             return Encontrado;
+        }
+
+        public static void GuardarTablas()
+        {
+            string ArchivoTablas = @"Tablas.XML";
+            DataTable Tablitas = new DataTable("Tabla");
+            Tablitas.Columns.Add("Numero");
+            Tablitas.Columns.Add("Nombre");
+            Tablitas.Columns.Add("Atributos");
+            Tablitas.Columns.Add("Restricciones");
+            for (int i = 0; i < AnalizadorSemantico.Tablas?.Count; i++)
+            {
+                string[] temp = AnalizadorSemantico.Tablas[i];
+                Tablitas.Rows.Add(temp[0], temp[1], temp[2], temp[3]);
+            }
+            File.Delete(ArchivoTablas);
+            FileStream t = new FileStream(ArchivoTablas, FileMode.OpenOrCreate);
+            Tablitas.WriteXml(t);
+            t.Close();
+            string ArchivoAtributos = @"Atributos.XML";
+            DataTable Atributitos = new DataTable("Atributos");
+            Atributitos.Columns.Add("Tabla");
+            Atributitos.Columns.Add("Numero");
+            Atributitos.Columns.Add("Nombre");
+            Atributitos.Columns.Add("Tipo");
+            Atributitos.Columns.Add("Longitud");
+            Atributitos.Columns.Add("Null");
+            for (int i = 0; i < AnalizadorSemantico.Atributos?.Count; i++)
+            {
+                string[] temp = AnalizadorSemantico.Atributos[i];
+                Atributitos.Rows.Add(temp[0], temp[1], temp[2], temp[3], temp[4], temp[5]);
+            }
+            File.Delete(ArchivoAtributos);
+            t = new FileStream(ArchivoAtributos, FileMode.OpenOrCreate);
+            Atributitos.WriteXml(t);
+            t.Close();
+            string ArchivoRestricciones = @"Restricciones.XML";
+            DataTable Restriccioncitas = new DataTable("Restricciones");
+            Restriccioncitas.Columns.Add("Tabla");
+            Restriccioncitas.Columns.Add("Numero");
+            Restriccioncitas.Columns.Add("Tipo");
+            Restriccioncitas.Columns.Add("Nombre");
+            Restriccioncitas.Columns.Add("AtributoReferenciado");
+            Restriccioncitas.Columns.Add("TablaReferenciada");
+            Restriccioncitas.Columns.Add("CampoReferenciado");
+            for (int i = 0; i < AnalizadorSemantico.Restricciones?.Count; i++)
+            {
+                string[] temp = AnalizadorSemantico.Restricciones[i];
+                Restriccioncitas.Rows.Add(temp[0], temp[1], temp[2], temp[3], temp[4], temp[5], temp[6]);
+            }
+            File.Delete(ArchivoRestricciones);
+            t = new FileStream(ArchivoRestricciones, FileMode.OpenOrCreate);
+            Restriccioncitas.WriteXml(t);
+            t.Close();
+        }
+
+        public static void Cargar()
+        {
+            string ArchivoTablas = @"Tablas.XML";
+            string ArchivoAtributos = @"Atributos.XML";
+            string ArchivoRestricciones = @"Restricciones.XML";
+            FileStream temp = new FileStream(ArchivoTablas, FileMode.Open);
+            DataTable x1 = new DataTable();
+            x1.ReadXmlSchema(temp);
+            temp.Close();
+            temp = new FileStream(ArchivoAtributos, FileMode.Open);
+            DataTable x2 = new DataTable();
+            x2.ReadXmlSchema(temp);
+            temp.Close();
+            temp = new FileStream(ArchivoRestricciones, FileMode.Open);
+            DataTable x3 = new DataTable();
+            x3.ReadXmlSchema(temp);
+            temp.Close();
+            Tablas = new List<string[]>();
+            for (int i = 0; i < x1.Rows.Count; i++)
+            {
+                DataRow x = x1.Rows[i];
+                Tablas.Add(new string[] { x[0].ToString(), x[1].ToString(), x[2].ToString(), x[3].ToString() });
+            }
         }
     }
 }

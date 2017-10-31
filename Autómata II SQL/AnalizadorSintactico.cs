@@ -212,7 +212,7 @@ namespace Autómata_II_SQL
                             ModuloErrores.TipoError = ModuloErrores.TipoDeError.Sintáctico;
                             ModuloErrores.Error = true;
                             ModuloErrores.NoError = 7;
-                            ModuloErrores.Linea = Convert.ToInt32(AnalizadorLexico.TablaLexica[Apuntador - 1][1]);
+                            ModuloErrores.Linea = Convert.ToInt32(AnalizadorLexico.TablaLexica[Apuntador - 1 < 0 ? 0 : Apuntador - 1][1]);
                             ModuloErrores.PalabraError = ObtenerPrimerosOSiguientes();
                         }
                     }
