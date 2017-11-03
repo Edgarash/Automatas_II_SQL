@@ -2,6 +2,7 @@
 using System.Drawing;
 using ScintillaNET;
 using System.Windows.Forms;
+using System.Data;
 
 namespace Autómata_II_SQL
 {
@@ -308,5 +309,15 @@ namespace Autómata_II_SQL
         }
 
         #endregion
+
+        private void guardarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AnalizadorSemantico.GuardarTablas();
+        }
+
+        private void cargarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AnalizadorSemantico.Cargar();
+        }
     }
 }
