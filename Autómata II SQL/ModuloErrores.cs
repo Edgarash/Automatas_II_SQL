@@ -45,7 +45,7 @@ namespace Autómata_II_SQL
                 {"3", "311", "El nombre de atributo ", " no es válido" },
                 {"3", "312", "El nombre de atributo ", " es ambigüo" },
                 {"3", "313", "Conversión de tipo de dato", "" },
-                {"3", "314", "Nombre de objeto inválido", "" },
+                {"3", "314", "Nombre de la tabla ", "no es válido"},
                 {"3", "315", "Identificador inválido", ""},
             }
         };

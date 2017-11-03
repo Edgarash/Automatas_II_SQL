@@ -112,6 +112,10 @@ namespace Autómata_II_SQL
                     Inserting++;
                     Cadena = false;
                     break;
+                case 714:
+                    if (!TablaEnTablas(Identificador, out Tabla))
+                        SetError(11, Identificador);
+                    break;
             }
         }
 
