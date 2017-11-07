@@ -10,10 +10,15 @@ namespace Autómata_II_SQL
 {
     public static class AnalizadorSemantico
     {
-
+        enum Parte { Select, From, Where }
+        private static Parte ParteDelSelect { get; set; }
         public static List<string[]> Tablas { get; set; }
         public static List<string[]> Atributos { get; set; }
         public static List<string[]> Restricciones { get; set; }
+        public static List<string[]> SelectCampos { get; set; }
+        public static List<string[]> FromTablas { get; set; }
+        public static List<string[]> WhereCampos { get; set; }
+        private static int SelectIndice { get; set; }
         private static int NoTabla { get; set; }
         private static int NoAtributos { get; set; }
         private static int NoRestricciones { get; set; }
@@ -22,6 +27,7 @@ namespace Autómata_II_SQL
         private static int TablaActual { get; set; }
         private static string NombreTablaActual { get; set; }
         private static bool Cadena { get; set; }
+        private static bool VamoAComparar { get; set; }
         private static int Inserting { get; set; }
 
         public static void InicializarSemantico()
@@ -29,11 +35,15 @@ namespace Autómata_II_SQL
             Tablas = new List<string[]>();
             Atributos = new List<string[]>();
             Restricciones = new List<string[]>();
+            SelectCampos = new List<string[]>();
+            FromTablas = new List<string[]>();
+            WhereCampos = new List<string[]>();
             RestriccionesActuales = AtributosActuales = NoTabla = NoAtributos = NoRestricciones = 1;
-            Inserting = 0;
+            SelectIndice = Inserting = 0;
+            VamoAComparar = false;
         }
 
-        public static void Metodos700(int Regla, string Identificador)
+        public static void Metodos700(int Regla, string Identificador, int IndiceTabla)
         {
             switch (Regla)
             {
@@ -76,7 +86,7 @@ namespace Autómata_II_SQL
                         SetError(2, Identificador, NombreTablaActual);
                     break;
                 case 708:
-                    int Tabla;
+                    int Tabla = 0;
                     if (TablaEnTablas(Identificador, out Tabla))
                     {
                         Restricciones[NoRestricciones - 2][5] = (Tabla + 1).ToString();
@@ -108,15 +118,118 @@ namespace Autómata_II_SQL
                     }
                     else
                     {
-                        string Cadenita = "No se puede asignarle el valor " + (Cadena? "'" : "") + Identificador + (Cadena ? "'" : "") + " al campo " + NombreCampo;
+                        string Cadenita = "No se puede asignarle el valor " + (Cadena ? "'" : "") + Identificador + (Cadena ? "'" : "") + " al campo " + NombreCampo;
                         SetError(6, Cadenita);
                     }
                     Inserting++;
                     Cadena = false;
                     break;
-                case 714:
+                case 712:
                     if (!TablaEnTablas(Identificador, out Tabla))
                         SetError(11, Identificador);
+                    break;
+                case 713:
+                    if (ParteDelSelect == Parte.Select)
+                        //IndiceTablaLéxica, Tabla, Atributo
+                        SelectCampos.Add(new string[] { IndiceTabla.ToString(), "", Identificador, "", SelectIndice.ToString() });
+                    else
+                    {
+                        if (ParteDelSelect == Parte.Where)
+                        {
+                            WhereCampos.Add(new string[] { IndiceTabla.ToString(), "", Identificador, "", "", "", "", VamoAComparar.ToString(), "", SelectIndice.ToString() });
+                            VamoAComparar = false;
+                        }
+                    }
+                    break;
+                case 714:
+                    ParteDelSelect = Parte.Select;
+                    break;
+                case 715:
+                    ParteDelSelect = Parte.From;
+                    break;
+                case 716:
+                    ParteDelSelect = Parte.Where;
+                    break;
+                case 717:
+                    if (ParteDelSelect == Parte.From)
+                    {
+                        TablaEnTablas(Identificador, out Tabla);
+                        FromTablas.Add(new string[] { IndiceTabla.ToString(), (Tabla + 1).ToString(), Identificador, "", "", SelectIndice.ToString() });
+                    }
+                    break;
+                case 718:
+                    if (ParteDelSelect == Parte.Select)
+                    {
+                        int Campo = SelectCampos.Count - 1;
+                        SelectCampos[Campo][1] = SelectCampos[Campo][2];
+                        SelectCampos[Campo][2] = Identificador;
+                        SelectCampos[Campo][3] = IndiceTabla.ToString();
+                    }
+                    else
+                    {
+                        if (ParteDelSelect == Parte.Where)
+                        {
+                            int Campo = WhereCampos.Count - 1;
+                            WhereCampos[Campo][1] = WhereCampos[Campo][2];
+                            WhereCampos[Campo][2] = Identificador;
+                            WhereCampos[Campo][3] = IndiceTabla.ToString();
+                        }
+                    }
+                    break;
+                case 719:
+                    if (ParteDelSelect == Parte.From)
+                    {
+                        bool Encontrado = false;
+                        for (int i = 0; i < FromTablas.Count && !Encontrado; i++)
+                            if (FromTablas[i][4] == SelectIndice.ToString())
+                                if (FromTablas[i][3] == Identificador)
+                                    Encontrado = true;
+                        if (!Encontrado)
+                        {
+                            FromTablas[FromTablas.Count - 1][3] = Identificador;
+                            FromTablas[FromTablas.Count - 1][4] = IndiceTabla.ToString();
+                        }
+                        else
+                            SetError(5, Identificador, IndiceTabla);
+                    }
+                    break;
+                case 720:
+                    VamoAComparar = true;
+                    break;
+                case 721:
+                    WhereCampos[WhereCampos.Count - 1][7] = Cadena ? "CADENA" : "NUMERIC";
+                    WhereCampos[WhereCampos.Count - 1][8] = Identificador;
+                    VamoAComparar = false;
+                    Cadena = false;
+                    break;
+                case 722:
+                    SelectIndice++;
+                    break;
+                case 723:
+                    for (int i = 0; i < SelectCampos.Count; i++)
+                        if (SelectCampos[i][4] == SelectIndice.ToString())
+                        {
+                            SelectCampos.RemoveAt(i);
+                            i--;
+                        }
+                    for (int i = 0; i < FromTablas.Count; i++)
+                        if (FromTablas[i][5] == SelectIndice.ToString())
+                        {
+                            FromTablas.RemoveAt(i);
+                            i--;
+                        }
+                    for (int i = 0; i < WhereCampos.Count; i++)
+                        if (WhereCampos[i][9] == SelectIndice.ToString())
+                        {
+                            WhereCampos.RemoveAt(i);
+                            i--;
+                        }
+                    SelectIndice--;
+                    break;
+                case 799:
+                    SelectBuscarAtributoEnTablas();
+                    if (!ModuloErrores.Error)
+                        WhereBuscarAtributoEnTablas();
                     break;
             }
         }
@@ -133,6 +246,13 @@ namespace Autómata_II_SQL
             ModuloErrores.NoError = NoError;
             ModuloErrores.PalabraError = PalabraError;
             ModuloErrores.PalabraError2 = PalabraError2;
+        }
+
+        private static void SetError(int NoError, string PalabraError, int IndiceTabla)
+        {
+            SetError(NoError, PalabraError);
+            ModuloErrores.IndiceTablaLexica = IndiceTabla;
+            ModuloErrores.Linea = Convert.ToInt32(AnalizadorLexico.TablaLexica[ModuloErrores.IndiceTablaLexica][1]);
         }
 
         private static void AgregarTabla(string Identificador)
@@ -183,7 +303,7 @@ namespace Autómata_II_SQL
         private static void AgregarRestriccion(string Identificador)
         {
             Tablas[NoTabla - 2][3] = (RestriccionesActuales++).ToString();
-            if (Restricciones.Count> 0)
+            if (Restricciones.Count > 0)
             {
                 if (string.IsNullOrWhiteSpace(Restricciones[NoRestricciones - 2][5])) Restricciones[NoRestricciones - 2][5] = "-";
                 if (string.IsNullOrWhiteSpace(Restricciones[NoRestricciones - 2][6])) Restricciones[NoRestricciones - 2][6] = "-";
@@ -196,9 +316,8 @@ namespace Autómata_II_SQL
             bool Encontrado = false;
             string Tablita = (NoTabla - 1).ToString();
             for (int i = 0; i < Restricciones.Count && !Encontrado; i++)
-                if (Restricciones[i][0] == Tablita)
-                    if (Restricciones[i][3] == Identificador)
-                        Encontrado = true;
+                if (Restricciones[i][3] == Identificador)
+                    Encontrado = true;
             return Encontrado;
         }
 
@@ -217,6 +336,196 @@ namespace Autómata_II_SQL
                 }
             return Encontrado;
         }
+
+        private static void SelectBuscarAtributoEnTablas()
+        {
+            bool Error = false;
+            for (int i = 0; i < SelectCampos.Count && !Error; i++)
+            {
+                string Tabla = SelectCampos[i][1];
+                string Campo = SelectCampos[i][2];
+                bool Encontrado = false;
+                int Veces = 0;
+                if (SelectCampos[i][4] == SelectIndice.ToString())
+                {
+                    if (Tabla == "")
+                    {
+                        for (int j = 0; j < Atributos.Count && Veces < 2; j++)
+                        {
+                            if (Campo == Atributos[j][2])
+                                if (AtributoEnTablasSelect(Atributos[j][0], SelectCampos[i][4]))
+                                { Encontrado = true; Veces++; }
+                        }
+                    }
+                    else
+                    {
+                        string TablaDeVerdad = "";
+                        if (BuscarTablaEnFrom(Tabla, out TablaDeVerdad))
+                        {
+                            int t;
+                            TablaEnTablas(TablaDeVerdad, out t);
+                            if (AtributoEnTabla(Campo, t + 2, out t))
+                            { Encontrado = true; Veces++; }
+                            else
+                            { Encontrado = true; SetError(8, Campo, Convert.ToInt32(SelectCampos[i][3])); }
+                        }
+                        else
+                        {
+                            SetError(8, Tabla, Convert.ToInt32(SelectCampos[i][0]));
+                            Encontrado = true;
+                        }
+                    }
+                    if (!Encontrado)
+                    {
+                        SetError(8, Campo, Convert.ToInt32(SelectCampos[i][0]));
+                        Error = true;
+                    }
+                    if (Veces > 1)
+                    {
+                        SetError(9, Campo, Convert.ToInt32(SelectCampos[i][0]));
+                        Error = true;
+                    }
+                }
+            }
+        }
+
+        private static void WhereBuscarAtributoEnTablas()
+        {
+            bool Error = false;
+            for (int i = 0; i < WhereCampos.Count && !Error; i++)
+            {
+                string Tabla = WhereCampos[i][1];
+                string Campo = WhereCampos[i][2];
+                bool Encontrado = false;
+                int Veces = 0;
+                if (WhereCampos[i][9] == SelectIndice.ToString())
+                {
+                    if (Tabla == "")
+                    {
+                        for (int j = 0; j < Atributos.Count && Veces < 2; j++)
+                        {
+                            if (Campo == Atributos[j][2])
+                                if (AtributoEnTablasSelect(Atributos[j][0], WhereCampos[i][9]))
+                                { Encontrado = true; Veces++; Tabla = Atributos[j][1]; }
+                        }
+                        if (Veces < 2)
+                        {
+                            int t = Convert.ToInt32(Tabla) - 1;
+                            WhereCampos[i][4] = Atributos[t][3];
+                            WhereCampos[i][5] = Atributos[t][4];
+                            WhereCampos[i][6] = Atributos[t][5];
+                            if (WhereCampos[i][7] == "True")
+                            {
+                                if (WhereCampos[i][4] != WhereCampos[i - 1][4])
+                                {
+                                    SetError(10, WhereCampos[i - 1][2], WhereCampos[i - 1][4] + "\" a tipo de dato \"" + WhereCampos[i][4]);
+                                    ModuloErrores.IndiceTablaLexica = Convert.ToInt32(WhereCampos[i - 1][3]);
+                                    ModuloErrores.Linea = Convert.ToInt32(AnalizadorLexico.TablaLexica[ModuloErrores.IndiceTablaLexica][1]);
+                                    Error = Encontrado = true;
+                                }
+                            }
+                            else
+                            {
+                                if (WhereCampos[i][7] != "False")
+                                {
+                                    WhereCampos[i][7] = WhereCampos[i][7] == "CADENA" ? "CHAR" : "NUMERIC";
+                                    if (WhereCampos[i][4] != WhereCampos[i][7])
+                                    {
+                                        SetError(10, WhereCampos[i][2], WhereCampos[i][4] + "\" a tipo de dato \"" + WhereCampos[i][7]);
+                                        ModuloErrores.IndiceTablaLexica = Convert.ToInt32(WhereCampos[i][0]);
+                                        ModuloErrores.Linea = Convert.ToInt32(AnalizadorLexico.TablaLexica[ModuloErrores.IndiceTablaLexica][1]);
+                                        Error = Encontrado = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        string TablaDeVerdad = "";
+                        if (BuscarTablaEnFrom(Tabla, out TablaDeVerdad))
+                        {
+                            int t;
+                            TablaEnTablas(TablaDeVerdad, out t);
+                            if (AtributoEnTabla(Campo, t + 2, out t))
+                            {
+                                Encontrado = true;
+                                Veces++;
+                                WhereCampos[i][4] = Atributos[t][3];
+                                WhereCampos[i][5] = Atributos[t][4];
+                                WhereCampos[i][6] = Atributos[t][5];
+                                if (WhereCampos[i][7] == "True")
+                                {
+                                    if (WhereCampos[i][4] != WhereCampos[i - 1][4])
+                                    {
+                                        SetError(10, WhereCampos[i - 1][2], WhereCampos[i - 1][4] + "\" a tipo de dato \"" + WhereCampos[i][4]);
+                                        ModuloErrores.IndiceTablaLexica = Convert.ToInt32(WhereCampos[i - 1][3]);
+                                        ModuloErrores.Linea = Convert.ToInt32(AnalizadorLexico.TablaLexica[ModuloErrores.IndiceTablaLexica][1]);
+                                        Error = Encontrado = true;
+                                    }
+                                }
+                                else
+                                {
+                                    if (WhereCampos[i][7] != "False")
+                                    {
+                                        WhereCampos[i][7] = WhereCampos[i][7] == "CADENA" ? "CHAR" : "NUMERIC";
+                                        if (WhereCampos[i][4] != WhereCampos[i][7])
+                                        {
+                                            SetError(10, WhereCampos[i][2], WhereCampos[i][4] + "\" a tipo de dato \"" + WhereCampos[i][7]);
+                                            ModuloErrores.IndiceTablaLexica = Convert.ToInt32(WhereCampos[i][3]);
+                                            ModuloErrores.Linea = Convert.ToInt32(AnalizadorLexico.TablaLexica[ModuloErrores.IndiceTablaLexica][1]);
+                                            Error = Encontrado = true;
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            { Encontrado = true; SetError(8, Campo, Convert.ToInt32(WhereCampos[i][3])); }
+                        }
+                        else
+                        {
+                            SetError(8, Tabla, Convert.ToInt32(WhereCampos[i][0]));
+                            Encontrado = true;
+                        }
+                    }
+                    if (!Encontrado)
+                    {
+                        SetError(8, Campo, Convert.ToInt32(WhereCampos[i][0]));
+                        Error = true;
+                    }
+                    if (Veces > 1)
+                    {
+                        SetError(9, Campo, Convert.ToInt32(WhereCampos[i][0]));
+                        Error = true;
+                    }
+                }
+            }
+        }
+
+        private static bool AtributoEnTablasSelect(string NoTablaDeAtributo, string Select)
+        {
+            bool Encontrado = false;
+            for (int i = 0; i < FromTablas.Count && !Encontrado; i++)
+                if (FromTablas[i][5] == Select)
+                    if (FromTablas[i][1] == NoTablaDeAtributo)
+                        Encontrado = true;
+            return Encontrado;
+        }
+
+        private static bool BuscarTablaEnFrom(string Tabla, out string VerdaderoNombreTabla)
+        {
+            VerdaderoNombreTabla = "";
+            bool Encontrado = false;
+            for (int i = 0; i < FromTablas.Count && !Encontrado; i++)
+                if ((FromTablas[i][2] == Tabla || FromTablas[i][3] == Tabla) && FromTablas[i][5] == SelectIndice.ToString())
+                {
+                    Encontrado = true;
+                    VerdaderoNombreTabla = FromTablas[i][2];
+                }
+            return Encontrado;
+        }
+
+        #region Cosas XML
 
         public static void GuardarTablas()
         {
@@ -272,7 +581,7 @@ namespace Autómata_II_SQL
             t.Close();
         }
 
-        public static void Cargar()
+        public static void CargarTablas()
         {
             string ArchivoTablas = @"Tablas.XML";
             string ArchivoAtributos = @"Atributos.XML";
@@ -296,5 +605,7 @@ namespace Autómata_II_SQL
                 Tablas.Add(new string[] { x[0].ToString(), x[1].ToString(), x[2].ToString(), x[3].ToString() });
             }
         }
+
+        #endregion
     }
 }

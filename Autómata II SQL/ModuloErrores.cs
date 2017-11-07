@@ -14,6 +14,7 @@ namespace Autómata_II_SQL
         public static TipoDeError TipoError { get; set; }
         public static int NoError { get; set; }
         public static int Linea { get; set; }
+        public static int IndiceTablaLexica { get; set; }
 
         public static string PalabraError { get; set; }
         public static string PalabraError2 { get; set; }
@@ -44,7 +45,7 @@ namespace Autómata_II_SQL
                 {"3", "308", "Los datos de cadena o binarios se truncarían ", "" },
                 {"3", "311", "El nombre de atributo ", " no es válido" },
                 {"3", "312", "El nombre de atributo ", " es ambigüo" },
-                {"3", "313", "Conversión de tipo de dato", "" },
+                {"3", "313", "Error de conversión al convertir el valor del atributo ", " del tipo" },
                 {"3", "314", "Nombre de la tabla ", "no es válido"},
                 {"3", "315", "Identificador inválido", ""},
             }
@@ -64,7 +65,7 @@ namespace Autómata_II_SQL
                     Cadena = "1:" + Errores[0][0, 1] + " Error en Línea " + Linea + ": "+ Errores[0][0, 2];
                     break;
                 case TipoDeError.Sintáctico:
-                    Cadena = "2:" + Errores[1][0, 1];
+                    Cadena = "2:" + Errores[1][Numero_Error, 1];
                     Cadena+= (Numero_Error == 0 ? " " : " Error en Línea " + Linea + ": ") + Errores[1][Numero_Error, 2] + (Numero_Error == 7 ? PalabraError : "");
                     break;
                 case TipoDeError.Semántico:

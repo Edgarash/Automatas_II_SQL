@@ -62,7 +62,7 @@ namespace Autómata_II_SQL
                 string[][] TablaLexica = AnalizadorLexico.TablaLexica;
                 dgvLexico.RowCount = TablaLexica.Length;
                 for (int i = 0; i < TablaLexica.Length; i++)
-                    for (int j = 0; j < TablaLexica[i].Length; j++)
+                    for (int j = 0; j < TablaLexica[i].Length - 2; j++)
                         dgvLexico[j, i].Value = TablaLexica[i][j];
                 //Tabla Identificadores
                 string[][] Identificadores = TablaDeSimbolos.Identificadores;
@@ -106,6 +106,7 @@ namespace Autómata_II_SQL
                 //Mensaje Error
                 if (ModuloErrores.Error)
                 {
+                    setError();
                     lblMensaje.ForeColor = Color.Red;
                     lblMensaje.Text = ModuloErrores.MensajeError();
                     if (ModuloErrores.TipoError == ModuloErrores.TipoDeError.Sintáctico && ModuloErrores.NoError == 0)
@@ -260,6 +261,10 @@ namespace Autómata_II_SQL
         private void SourceCode_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.KeyChar = char.ToUpper(e.KeyChar);
+            SourceCode.IndicatorCurrent = 0;
+            SourceCode.IndicatorClearRange(0, SourceCode.Text.Length);
+            SourceCode.IndicatorCurrent = 1;
+            SourceCode.IndicatorClearRange(0, SourceCode.Text.Length);
         }
 
 
@@ -317,7 +322,49 @@ namespace Autómata_II_SQL
 
         private void cargarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AnalizadorSemantico.Cargar();
+            AnalizadorSemantico.CargarTablas();
+        }
+
+        private void setError()
+        {
+            SourceCode.IndicatorCurrent = 0;
+            SourceCode.Indicators[0].Style = IndicatorStyle.TextFore;
+            SourceCode.Indicators[0].ForeColor = Color.Red;
+            SourceCode.Indicators[1].Style = IndicatorStyle.FullBox;
+            SourceCode.Indicators[1].ForeColor = Color.Red;
+            SourceCode.Indicators[1].Alpha = 100;
+
+            string[][] Tabla = AnalizadorLexico.TablaLexica;
+            int Indice = ModuloErrores.IndiceTablaLexica;
+            switch (ModuloErrores.TipoError)
+            {
+                case ModuloErrores.TipoDeError.Léxico:
+                    if (ModuloErrores.Error)
+                    {
+                        SourceCode.IndicatorFillRange(ModuloErrores.IndiceTablaLexica, 1);
+                        SourceCode.IndicatorCurrent++;
+                        SourceCode.IndicatorFillRange(ModuloErrores.IndiceTablaLexica, 1);
+                    }
+                    break;
+                case ModuloErrores.TipoDeError.Semántico:
+                    if (ModuloErrores.Error)
+                    {
+                        int Empieza = Convert.ToInt32(Tabla[Indice][5]);
+                        int Longitud = Tabla[Indice][2].Length;
+                        if (Tabla[Indice][2] == "CONSTANTE")
+                        {
+                            if (Tabla[Indice-1][4] == "54")
+                                Empieza++;
+                            Longitud = ModuloErrores.PalabraError.Length;
+                        }
+                        SourceCode.IndicatorFillRange(Empieza, Longitud);
+                        SourceCode.IndicatorCurrent++;
+                        SourceCode.IndicatorFillRange(Empieza, Longitud);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

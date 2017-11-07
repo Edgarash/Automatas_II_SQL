@@ -18,6 +18,8 @@ namespace Autómata_II_SQL
         private static char Token { get; set; }
         private static int Ultimo { get; set; }
         private static bool Error { get; set; }
+        private static int Opening { get; set; }
+        private static int Ending { get; set; }
 
         public static int NoLinea { get; set; }
         public static string[][] TablaLexica { get { return TL.ToArray(); } }
@@ -101,6 +103,7 @@ namespace Autómata_II_SQL
                                 Contador++;
                             else
                             {
+                                Opening = Contador;
                                 if (TablaDeSimbolos.EsOperador(Token, out Indice))
                                     Estado = MT[0, 1];
                                 else
@@ -212,11 +215,8 @@ namespace Autómata_II_SQL
                     case 6:
                         if (Token == '\'')
                         {
-                            if (Acumulador != "")
-                            {
-                                Indice = TablaDeSimbolos.AgregarConstante(Caracter - 1, Acumulador);
+                                Indice = TablaDeSimbolos.AgregarConstante(Caracter, Acumulador);
                                 AgregarConstanteTL();
-                            }
                             TablaDeSimbolos.EsDelimitador(Token, out Indice);
                             AgregarDelimitadorTL();
                             Contador++;
@@ -275,6 +275,7 @@ namespace Autómata_II_SQL
                     case 9:
                         ModuloErrores.TipoError = ModuloErrores.TipoDeError.Léxico;
                         ModuloErrores.Linea = NoLinea;
+                        ModuloErrores.IndiceTablaLexica = Contador;
                         Error = true;
                         break;
                 }
@@ -311,7 +312,7 @@ namespace Autómata_II_SQL
 
         private static void AgregarTL(string No, string Linea, string Token, string Tipo, string Codigo)
         {
-                TL.Add(new string[] { No, Linea, Token, Tipo, Codigo });
+                TL.Add(new string[] { No, Linea, Token, Tipo, Codigo, Opening.ToString(), Contador.ToString()});
                 Acumulador = "";
                 Caracter++;
         }
