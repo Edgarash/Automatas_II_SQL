@@ -411,7 +411,7 @@ namespace Autómata_II_SQL
                                 if (AtributoEnTablasSelect(Atributos[j][0], WhereCampos[i][9]))
                                 { Encontrado = true; Veces++; Tabla = Atributos[j][1]; }
                         }
-                        if (Veces < 2)
+                        if (Veces < 2 && Veces > 0)
                         {
                             int t = Convert.ToInt32(Tabla) - 1;
                             WhereCampos[i][4] = Atributos[t][3];
@@ -483,12 +483,15 @@ namespace Autómata_II_SQL
                                 }
                             }
                             else
-                            { Encontrado = true; SetError(8, Campo, Convert.ToInt32(WhereCampos[i][3])); }
+                            { Encontrado = true; SetError(8, Campo, Convert.ToInt32(WhereCampos[i][3]));
+                                Error = true;
+                            }
                         }
                         else
                         {
                             SetError(8, Tabla, Convert.ToInt32(WhereCampos[i][0]));
                             Encontrado = true;
+                            Error = true;
                         }
                     }
                     if (!Encontrado)
