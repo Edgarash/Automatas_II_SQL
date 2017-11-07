@@ -89,9 +89,12 @@ namespace Autómata_II_SQL
                     int Tabla = 0;
                     if (TablaEnTablas(Identificador, out Tabla))
                     {
-                        Restricciones[NoRestricciones - 2][5] = (Tabla + 1).ToString();
-                        TablaActual = Tabla;
-                        Inserting = 0;
+                        if (NoRestricciones > 1)
+                        {
+                            Restricciones[NoRestricciones - 2][5] = (Tabla + 1).ToString();
+                            TablaActual = Tabla;
+                            Inserting = 0;
+                        }
                     }
                     else
                         SetError(4, Identificador);
@@ -181,7 +184,7 @@ namespace Autómata_II_SQL
                     {
                         bool Encontrado = false;
                         for (int i = 0; i < FromTablas.Count && !Encontrado; i++)
-                            if (FromTablas[i][4] == SelectIndice.ToString())
+                            if (FromTablas[i][5] == SelectIndice.ToString())
                                 if (FromTablas[i][3] == Identificador)
                                     Encontrado = true;
                         if (!Encontrado)
