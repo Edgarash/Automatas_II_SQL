@@ -44,7 +44,7 @@ namespace Autómata_II_SQL
                 {"3", "307", "Los valores especificados no corresponden ", "" },
                 {"3", "308", "Los datos de cadena o binarios se truncarían ", "" },
                 {"3", "311", "El nombre de atributo ", " no es válido" },
-                {"3", "312", "El nombre de atributo ", " es ambigüo" },
+                {"3", "312", "La tabla ", " no existe" },
                 {"3", "313", "Error de conversión al convertir el valor del atributo ", " del tipo" },
                 {"3", "314", "Nombre de la tabla ", "no es válido"},
                 {"3", "315", "Identificador inválido", ""},
