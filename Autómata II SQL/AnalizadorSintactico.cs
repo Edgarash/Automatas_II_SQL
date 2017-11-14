@@ -169,7 +169,9 @@ namespace Autómata_II_SQL
                 Xx = int.Parse(X);
                 if (Xx >= 700)
                 {
-                    string Identificador = AnalizadorLexico.TablaLexica[Apuntador - 1][2];
+                    string Identificador = "";
+                    if (Xx != 722 && Xx != 723)
+                        Identificador = AnalizadorLexico.TablaLexica[Apuntador - 1][2];
                     if (Identificador == "CONSTANTE")
                         Identificador = TablaDeSimbolos.BuscarConstante(AnalizadorLexico.TablaLexica[Apuntador - 1][4]);
                     AnalizadorSemantico.Metodos700(Xx, Identificador, Apuntador - 1);
