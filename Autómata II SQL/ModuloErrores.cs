@@ -48,6 +48,7 @@ namespace Autómata_II_SQL
                 {"3", "313", "Error de conversión al convertir el valor del atributo ", " del tipo" },
                 {"3", "314", "Nombre de la tabla ", "no es válido"},
                 {"3", "315", "Identificador inválido", ""},
+                {"3", "312", "La tabla "," no existe" }
             }
         };
 

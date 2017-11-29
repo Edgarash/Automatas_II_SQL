@@ -374,7 +374,7 @@ namespace Autómata_II_SQL
                         }
                         else
                         {
-                            SetError(8, Tabla, Convert.ToInt32(SelectCampos[i][0]));
+                            SetError(13, Tabla, Convert.ToInt32(SelectCampos[i][0]));
                             Encontrado = true;
                         }
                     }
@@ -489,7 +489,7 @@ namespace Autómata_II_SQL
                         }
                         else
                         {
-                            SetError(8, Tabla, Convert.ToInt32(WhereCampos[i][0]));
+                            SetError(13, Tabla, Convert.ToInt32(WhereCampos[i][0]));
                             Encontrado = true;
                             Error = true;
                         }
