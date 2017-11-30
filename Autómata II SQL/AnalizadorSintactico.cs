@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static Autómata_II_SQL.AnalizadorSemantico;
 
 namespace Autómata_II_SQL
 {
@@ -151,6 +149,7 @@ namespace Autómata_II_SQL
 
         public static void Analizar()
         {
+            InicializarSemantico();
             ModuloErrores.PalabraError = "";
             int Xx;
             Arbol = new List<string[]>();

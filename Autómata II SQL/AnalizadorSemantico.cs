@@ -32,13 +32,18 @@ namespace Autómata_II_SQL
 
         public static void InicializarSemantico()
         {
-            Tablas = new List<string[]>();
-            Atributos = new List<string[]>();
-            Restricciones = new List<string[]>();
+            //Tablas = new List<string[]>();
+            //Atributos = new List<string[]>();
+            //Restricciones = new List<string[]>();
+            ConexionBaseDeDatos.LlenarTablas();
             SelectCampos = new List<string[]>();
             FromTablas = new List<string[]>();
             WhereCampos = new List<string[]>();
-            RestriccionesActuales = AtributosActuales = NoTabla = NoAtributos = NoRestricciones = 1;
+            RestriccionesActuales = Restricciones.Count + 1;
+            AtributosActuales = Atributos.Count + 1;
+            NoTabla = Tablas.Count + 1;
+            NoAtributos = Atributos.Count + 1;
+            NoRestricciones = Restricciones.Count + 1;
             SelectIndice = Inserting = 0;
             VamoAComparar = false;
         }
@@ -76,7 +81,7 @@ namespace Autómata_II_SQL
                         SetError(3, Identificador);
                     break;
                 case 706:
-                    Restricciones[NoRestricciones - 2][2] = Identificador == "PRIMARY" ? "1" : "2";
+                    Restricciones[NoRestricciones - 2][2] = Identificador == "PRIMARY" ? "PK" : "FK";
                     break;
                 case 707:
                     int Indice;

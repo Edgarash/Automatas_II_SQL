@@ -3,11 +3,14 @@ using System.Drawing;
 using ScintillaNET;
 using System.Windows.Forms;
 using System.Data;
+using static Autómata_II_SQL.ConexionBaseDeDatos;
+using System.Configuration;
 
 namespace Autómata_II_SQL
 {
     public partial class Analizadores : Form
     {
+        static BuscarInstancias Instancias { get; set; }
         static Timer Retraso { get; set; }
         static DateTime HoraInicial { get; set; }
         static DateTime HoraFinal { get; set; }
@@ -24,9 +27,11 @@ namespace Autómata_II_SQL
         {
             InitializeComponent();
             InitialiseScintilla();
+            CadenaConexion = ConfigurationManager.ConnectionStrings["default"].ConnectionString;
             Retraso = new Timer();
             Retraso.Tick += Retraso_Tick;
             Retraso.Interval = 1000;
+            Instancias = new BuscarInstancias();
             Diseñando = false;
         }
 
@@ -38,14 +43,6 @@ namespace Autómata_II_SQL
 
         private void Analizar(string Cadena)
         {
-            //Limpiando Parámetros
-            dgvLexico.Rows.Clear();
-            dgvIdentificadores.Rows.Clear();
-            dgvArbol.Rows.Clear();
-            dgvTablaTablas.Rows.Clear();
-            dgvAtributos.Rows.Clear();
-            dgvRestricciones.Rows.Clear();
-            AnalizadorSemantico.InicializarSemantico();
             ModuloErrores.Error = false;
             //Verificando Cadena Vacía
             if (!string.IsNullOrWhiteSpace(Cadena))
@@ -58,51 +55,13 @@ namespace Autómata_II_SQL
                 if (!ModuloErrores.Error)
                     AnalizadorSintactico.Analizar();
                 HoraFinal = DateTime.Now;
-                //Tabla Léxica
-                string[][] TablaLexica = AnalizadorLexico.TablaLexica;
-                dgvLexico.RowCount = TablaLexica.Length;
-                for (int i = 0; i < TablaLexica.Length; i++)
-                    for (int j = 0; j < TablaLexica[i].Length - 2; j++)
-                        dgvLexico[j, i].Value = TablaLexica[i][j];
-                //Tabla Identificadores
-                string[][] Identificadores = TablaDeSimbolos.Identificadores;
-                dgvIdentificadores.RowCount = Identificadores.Length;
-                for (int i = 0; i < Identificadores.Length; i++)
-                    for (int j = 0; j < Identificadores[i].Length; j++)
-                        dgvIdentificadores[j, i].Value = Identificadores[i][j];
-                //Tabla Constantes
-                string[][] Constantes = TablaDeSimbolos.Constantes;
-                dgvConstantes.RowCount = Constantes.Length;
-                for (int i = 0; i < Constantes.Length; i++)
-                    for (int j = 0; j < Constantes[0].Length; j++)
-                        dgvConstantes[j, i].Value = Constantes[i][j];
-                //Tabla Arbol Sintactico
-                if (AnalizadorSintactico.Arbol?.Count > 0)
-                {
-                    string[][] Arbol = AnalizadorSintactico.ArbolSintactico;
-                    dgvArbol.RowCount = Arbol.Length;
-                    for (int i = 0; i < Arbol.Length; i++)
-                        for (int j = 0; j < Arbol[i].Length; j++)
-                            dgvArbol[j, i].Value = Arbol[i][j];
-                }
-                //Tabla Tablas
-                string[][] Tablas = AnalizadorSemantico.Tablas.ToArray();
-                dgvTablaTablas.RowCount = Tablas.Length;
-                for (int i = 0; i < Tablas.Length; i++)
-                    for (int j = 0; j < Tablas[i].Length; j++)
-                        dgvTablaTablas[j, i].Value = Tablas[i][j];
-                //Tabla Atributos
-                string[][] Atributos = AnalizadorSemantico.Atributos.ToArray();
-                dgvAtributos.RowCount = Atributos.Length;
-                for (int i = 0; i < Atributos.Length; i++)
-                    for (int j = 0; j < Atributos[i].Length; j++)
-                        dgvAtributos[j, i].Value = Atributos[i][j];
-                //Tabla Restricciones
-                string[][] Restricciones = AnalizadorSemantico.Restricciones.ToArray();
-                dgvRestricciones.RowCount = Restricciones.Length;
-                for (int i = 0; i < Restricciones.Length; i++)
-                    for (int j = 0; j < Restricciones[i].Length; j++)
-                        dgvRestricciones[j, i].Value = Restricciones[i][j];
+                TablasLexica();
+                TablasIdentificadores();
+                TablasConstantes();
+                TablasSintactico();
+                TablasBD();
+                TablasAtributos();
+                TablasRestricciones();
                 //Mensaje Error
                 if (ModuloErrores.Error)
                 {
@@ -136,6 +95,8 @@ namespace Autómata_II_SQL
             Retraso.Stop();
             Retraso.Start();
         }
+
+        #region Scintilla
 
         private void SourceCode_Delete(object sender, ModificationEventArgs e)
         {
@@ -267,6 +228,7 @@ namespace Autómata_II_SQL
             SourceCode.IndicatorClearRange(0, SourceCode.Text.Length);
         }
 
+        #endregion
 
         #region Columna Movible
 
@@ -315,14 +277,95 @@ namespace Autómata_II_SQL
 
         #endregion
 
-        private void guardarToolStripMenuItem_Click(object sender, EventArgs e)
+        #region LlenarDatas
+
+        private void TablasLexica()
         {
-            AnalizadorSemantico.GuardarTablas();
+            //Tabla Léxica
+            dgvLexico.Rows.Clear();
+            string[][] TablaLexica = AnalizadorLexico.TablaLexica;
+            dgvLexico.RowCount = TablaLexica.Length;
+            for (int i = 0; i < TablaLexica.Length; i++)
+                for (int j = 0; j < TablaLexica[i].Length - 2; j++)
+                    dgvLexico[j, i].Value = TablaLexica[i][j];
         }
+
+        private void TablasIdentificadores()
+        {
+            //Tabla Identificadores
+            dgvIdentificadores.Rows.Clear();
+            string[][] Identificadores = TablaDeSimbolos.Identificadores;
+            dgvIdentificadores.RowCount = Identificadores.Length;
+            for (int i = 0; i < Identificadores.Length; i++)
+                for (int j = 0; j < Identificadores[i].Length; j++)
+                    dgvIdentificadores[j, i].Value = Identificadores[i][j];
+        }
+
+        private void TablasConstantes()
+        {
+            //Tabla Constantes
+            dgvConstantes.Rows.Clear();
+            string[][] Constantes = TablaDeSimbolos.Constantes;
+            dgvConstantes.RowCount = Constantes.Length;
+            for (int i = 0; i < Constantes.Length; i++)
+                for (int j = 0; j < Constantes[0].Length; j++)
+                    dgvConstantes[j, i].Value = Constantes[i][j];
+        }
+
+        private void TablasSintactico()
+        {
+            //Tabla Arbol Sintactico
+            dgvArbol.Rows.Clear();
+            if (AnalizadorSintactico.Arbol?.Count > 0)
+            {
+                string[][] Arbol = AnalizadorSintactico.ArbolSintactico;
+                dgvArbol.RowCount = Arbol.Length;
+                for (int i = 0; i < Arbol.Length; i++)
+                    for (int j = 0; j < Arbol[i].Length; j++)
+                        dgvArbol[j, i].Value = Arbol[i][j];
+            }
+        }
+
+        private void TablasBD()
+        {
+            //Tabla Tablas
+            dgvTablaTablas.Rows.Clear();
+            string[][] Tablas = AnalizadorSemantico.Tablas.ToArray();
+            dgvTablaTablas.RowCount = Tablas.Length;
+            for (int i = 0; i < Tablas.Length; i++)
+                for (int j = 0; j < Tablas[i].Length; j++)
+                    dgvTablaTablas[j, i].Value = Tablas[i][j];
+        }
+        private void TablasAtributos()
+        {
+            //Tabla Atributos
+            dgvAtributos.Rows.Clear();
+            string[][] Atributos = AnalizadorSemantico.Atributos.ToArray();
+            dgvAtributos.RowCount = Atributos.Length;
+            for (int i = 0; i < Atributos.Length; i++)
+                for (int j = 0; j < Atributos[i].Length; j++)
+                    dgvAtributos[j, i].Value = Atributos[i][j];
+        }
+
+        private void TablasRestricciones()
+        {
+            //Tabla Restricciones
+            dgvRestricciones.Rows.Clear();
+            string[][] Restricciones = AnalizadorSemantico.Restricciones.ToArray();
+            dgvRestricciones.RowCount = Restricciones.Length;
+            for (int i = 0; i < Restricciones.Length; i++)
+                for (int j = 0; j < Restricciones[i].Length; j++)
+                    dgvRestricciones[j, i].Value = Restricciones[i][j];
+        }
+
+        #endregion
 
         private void cargarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AnalizadorSemantico.CargarTablas();
+            LlenarTablas();
+            TablasBD();
+            TablasAtributos();
+            TablasRestricciones();
         }
 
         private void setError()
@@ -365,6 +408,12 @@ namespace Autómata_II_SQL
                 default:
                     break;
             }
+        }
+
+        private void cambiarTablaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Instancias.ShowDialog();
+            cargarToolStripMenuItem.PerformClick();
         }
     }
 }

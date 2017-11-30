@@ -98,7 +98,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.tablasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cargarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.guardarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cambiarTablaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tablas.SuspendLayout();
             this.Lexico.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLexico)).BeginInit();
@@ -823,7 +823,7 @@
             // 
             this.tablasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cargarToolStripMenuItem,
-            this.guardarToolStripMenuItem});
+            this.cambiarTablaToolStripMenuItem});
             this.tablasToolStripMenuItem.Name = "tablasToolStripMenuItem";
             this.tablasToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.tablasToolStripMenuItem.Text = "Tablas";
@@ -835,12 +835,12 @@
             this.cargarToolStripMenuItem.Text = "Cargar";
             this.cargarToolStripMenuItem.Click += new System.EventHandler(this.cargarToolStripMenuItem_Click);
             // 
-            // guardarToolStripMenuItem
+            // cambiarTablaToolStripMenuItem
             // 
-            this.guardarToolStripMenuItem.Name = "guardarToolStripMenuItem";
-            this.guardarToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.guardarToolStripMenuItem.Text = "Guardar";
-            this.guardarToolStripMenuItem.Click += new System.EventHandler(this.guardarToolStripMenuItem_Click);
+            this.cambiarTablaToolStripMenuItem.Name = "cambiarTablaToolStripMenuItem";
+            this.cambiarTablaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cambiarTablaToolStripMenuItem.Text = "Cambiar Tabla";
+            this.cambiarTablaToolStripMenuItem.Click += new System.EventHandler(this.cambiarTablaToolStripMenuItem_Click);
             // 
             // Analizadores
             // 
@@ -939,7 +939,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem tablasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cargarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem guardarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cambiarTablaToolStripMenuItem;
     }
 }
 
