@@ -111,5 +111,11 @@ namespace Autómata_II_SQL
                     "Initial Catalog=" + cbBaseDatos.SelectedItem.ToString() + ";server=" + cbInstancia.SelectedItem.ToString() + ";";
             Hide();
         }
+
+        private void BuscarInstancias_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (ConexionBaseDeDatos.CadenaConexion == null)
+                Application.ExitThread();
+        }
     }
 }

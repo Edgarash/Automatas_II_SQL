@@ -2,8 +2,8 @@
 using System.Drawing;
 using ScintillaNET;
 using System.Windows.Forms;
-using System.Data;
 using static Autómata_II_SQL.ConexionBaseDeDatos;
+using System.Threading;
 using System.Configuration;
 
 namespace Autómata_II_SQL
@@ -11,50 +11,45 @@ namespace Autómata_II_SQL
     public partial class Analizadores : Form
     {
         static BuscarInstancias Instancias { get; set; }
-        static Timer Retraso { get; set; }
+        static System.Windows.Forms.Timer Retraso { get; set; }
         static DateTime HoraInicial { get; set; }
+        static DateTime HoraInicial2 { get; set; }
         static DateTime HoraFinal { get; set; }
-        static string TiempoTardado
-        {
-            get
-            {
-                TimeSpan x = HoraFinal - HoraInicial;
-                return x.ToString();
-            }
-        }
+        static DateTime HoraFinal2 { get; set; }
 
         public Analizadores()
         {
             InitializeComponent();
             InitialiseScintilla();
-            CadenaConexion = ConfigurationManager.ConnectionStrings["default"].ConnectionString;
-            Retraso = new Timer();
+            Retraso = new System.Windows.Forms.Timer();
             Retraso.Tick += Retraso_Tick;
             Retraso.Interval = 1000;
             Instancias = new BuscarInstancias();
-            Diseñando = false;
+            cambiarBDToolStripMenuItem.PerformClick();
         }
 
         private void Retraso_Tick(object sender, EventArgs e)
         {
-            Analizar(SourceCode.Text);
-            Retraso.Stop();
-        }
-
-        private void Analizar(string Cadena)
-        {
-            ModuloErrores.Error = false;
+            string ParaAnalizar = SourceCode.Text.ToUpper();
             //Verificando Cadena Vacía
-            if (!string.IsNullOrWhiteSpace(Cadena))
+            if (!string.IsNullOrWhiteSpace(ParaAnalizar))
             {
+                ModuloErrores.Error = false;
                 //Empieza Conteo Tiempo
-                HoraInicial = DateTime.Now;
-                //Análisis Léxico
-                ModuloErrores.Error = AnalizadorLexico.Analizar(Cadena.ToUpper());
-                //Analizador Sintactico
-                if (!ModuloErrores.Error)
-                    AnalizadorSintactico.Analizar();
-                HoraFinal = DateTime.Now;
+                if (rb2Pasadas.Checked || rbComparar.Checked)
+                {
+                    HoraInicial = DateTime.Now;
+                    Analizar2Pasadas(ParaAnalizar);
+                    HoraFinal = DateTime.Now;
+                }
+                if (rb1Pasada.Checked || rbComparar.Checked)
+                {
+                    HoraInicial2 = DateTime.Now;
+                    Analizar1PasadaOptimizado(ParaAnalizar);
+                    HoraFinal2 = DateTime.Now;
+                }
+                //Hora Final
+                //Lenado de Tablas
                 TablasLexica();
                 TablasIdentificadores();
                 TablasConstantes();
@@ -62,30 +57,48 @@ namespace Autómata_II_SQL
                 TablasBD();
                 TablasAtributos();
                 TablasRestricciones();
-                //Mensaje Error
-                if (ModuloErrores.Error)
+                if (rb1Pasada.Checked)
                 {
-                    setError();
-                    lblMensaje.ForeColor = Color.Red;
-                    lblMensaje.Text = ModuloErrores.MensajeError();
-                    if (ModuloErrores.TipoError == ModuloErrores.TipoDeError.Sintáctico && ModuloErrores.NoError == 0)
-                    {
-                        lblMensaje.ForeColor = Color.Green;
-                        lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.TipoDeError.Sintáctico, 0, 0);
-                    }
+                    TimeSpan x = HoraFinal2 - HoraInicial2;
+                    lblTiempo.Text = "Optimizado: " + x.TotalSeconds.ToString("N2");
                 }
-                else
+                if (rb2Pasadas.Checked)
                 {
-                    lblMensaje.ForeColor = Color.Green;
-                    lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.TipoDeError.Sintáctico, 0, 0);
+                    TimeSpan x = HoraFinal - HoraInicial;
+                    lblTiempo.Text = "2 Pasadas: " + x.TotalSeconds.ToString("N2");
                 }
-                lblTiempo.Text = TiempoTardado;
+                if (rbComparar.Checked)
+                {
+                    TimeSpan x = HoraFinal - HoraInicial;
+                    TimeSpan y = HoraFinal2 - HoraInicial2;
+                    bool Opti = y < x;
+                    lblTiempo.Text = 
+                        "2 Pasadas: " + x.TotalSeconds.ToString("N5") + (!Opti ? "        " + (1-(1/y.TotalMilliseconds*x.TotalMilliseconds)).ToString("P2") + " Más rápido" : "") +
+                        "\nOptimizado: " + y.TotalSeconds.ToString("N5") + (Opti ? "        " + (1 - (1 / x.TotalMilliseconds * y.TotalMilliseconds)).ToString("P2") + " Más rápido" : "");
+                }
+                DesplegarErrorEnLabel();
             }
             else
             {
                 lblMensaje.Text = "";
                 lblTiempo.Text = "";
+                btnEjecutar.Visible = false;
             }
+            Retraso.Stop();
+        }
+
+        private void Analizar2Pasadas(string Cadena)
+        {
+            //Análisis Léxico
+            ModuloErrores.Error = AnalizadorLexico.Analizar(Cadena);
+            //Analizador Sintactico
+            if (!ModuloErrores.Error)
+                AnalizadorSintactico.Analizar();
+        }
+
+        private void Analizar1PasadaOptimizado(string Cadena)
+        {
+            AnalizadorSintactico.Analizar1Pasada(Cadena);
         }
 
         private void SourceCode_TextChanged(object sender, EventArgs e)
@@ -229,54 +242,7 @@ namespace Autómata_II_SQL
         }
 
         #endregion
-
-        #region Columna Movible
-
-        static bool Diseñando { get; set; }
-        static bool Entro { get; set; }
-        static float XXX { get; set; }
-        private void tlpDiseño_MouseMove(object sender, MouseEventArgs e)
-        {
-            int Pos1 = SourceCode.Location.X + SourceCode.Width;
-            int Pos2 = Tablas.Location.X;
-            if (Pos1 <= e.X && Pos2 > e.X)
-            {
-                Entro = true;
-                tlpDiseño.Cursor = Cursors.VSplit;
-            }
-            else
-            {
-                if (!Diseñando)
-                {
-                    Entro = false;
-                    tlpDiseño.Cursor = Cursors.Default;
-                }
-            }
-            if (Diseñando)
-            {
-                XXX = (e.X / (float)Width) * 100f;
-                tlpDiseño.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, XXX);
-                tlpDiseño.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 100 - XXX);
-            }
-        }
-
-        private void tlpDiseño_MouseClick(object sender, MouseEventArgs e)
-        {
-            Diseñando = e.Button == MouseButtons.Left;
-        }
-
-        private void tlpDiseño_MouseUp(object sender, MouseEventArgs e)
-        {
-            Diseñando = false;
-        }
-
-        private void tlpDiseño_MouseLeave(object sender, EventArgs e)
-        {
-            tlpDiseño.Cursor = Cursors.Default;
-        }
-
-        #endregion
-
+        
         #region LlenarDatas
 
         private void TablasLexica()
@@ -410,10 +376,40 @@ namespace Autómata_II_SQL
             }
         }
 
-        private void cambiarTablaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DesplegarErrorEnLabel()
+        {
+            //Mensaje Error
+            if (ModuloErrores.Error)
+            {
+                btnEjecutar.Visible = false;
+                setError();
+                lblMensaje.ForeColor = Color.Red;
+                lblMensaje.Text = ModuloErrores.MensajeError();
+                if (ModuloErrores.TipoError == ModuloErrores.TipoDeError.Sintáctico && ModuloErrores.NoError == 0)
+                {
+                    lblMensaje.ForeColor = Color.Green;
+                    lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.TipoDeError.Sintáctico, 0, 0);
+                }
+            }
+            else
+            {
+                lblMensaje.ForeColor = Color.Green;
+                lblMensaje.Text = ModuloErrores.MensajeError(ModuloErrores.TipoDeError.Sintáctico, 0, 0);
+                btnEjecutar.Visible = true;
+            }
+        }
+
+        private void cambiarBDToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Instancias.ShowDialog();
-            cargarToolStripMenuItem.PerformClick();
+            if (CadenaConexion != null)
+                cargarToolStripMenuItem.PerformClick();
+        }
+
+        private void btnEjecutar_Click(object sender, EventArgs e)
+        {
+            MandarComandos(SourceCode.Text);
+            btnEjecutar.Visible = false;
         }
     }
 }

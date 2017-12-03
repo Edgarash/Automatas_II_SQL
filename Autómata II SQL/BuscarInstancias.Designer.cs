@@ -42,10 +42,10 @@
             // 
             this.cbInstancia.FormattingEnabled = true;
             this.cbInstancia.Location = new System.Drawing.Point(23, 40);
-            this.cbInstancia.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.cbInstancia.Margin = new System.Windows.Forms.Padding(5);
             this.cbInstancia.Name = "cbInstancia";
             this.cbInstancia.Size = new System.Drawing.Size(394, 28);
-            this.cbInstancia.TabIndex = 0;
+            this.cbInstancia.TabIndex = 1;
             this.cbInstancia.SelectedIndexChanged += new System.EventHandler(this.cbInstancia_SelectedIndexChanged);
             // 
             // btnBuscarInstancia
@@ -59,7 +59,7 @@
             this.btnBuscarInstancia.Location = new System.Drawing.Point(440, 18);
             this.btnBuscarInstancia.Name = "btnBuscarInstancia";
             this.btnBuscarInstancia.Size = new System.Drawing.Size(143, 50);
-            this.btnBuscarInstancia.TabIndex = 1;
+            this.btnBuscarInstancia.TabIndex = 2;
             this.btnBuscarInstancia.Text = "Buscar Instancia";
             this.btnBuscarInstancia.UseVisualStyleBackColor = false;
             this.btnBuscarInstancia.Click += new System.EventHandler(this.btnBuscarInstancia_Click);
@@ -80,7 +80,7 @@
             this.cbBaseDatos.Margin = new System.Windows.Forms.Padding(5);
             this.cbBaseDatos.Name = "cbBaseDatos";
             this.cbBaseDatos.Size = new System.Drawing.Size(394, 28);
-            this.cbBaseDatos.TabIndex = 0;
+            this.cbBaseDatos.TabIndex = 3;
             // 
             // btnBuscarBD
             // 
@@ -93,7 +93,7 @@
             this.btnBuscarBD.Location = new System.Drawing.Point(440, 89);
             this.btnBuscarBD.Name = "btnBuscarBD";
             this.btnBuscarBD.Size = new System.Drawing.Size(143, 50);
-            this.btnBuscarBD.TabIndex = 1;
+            this.btnBuscarBD.TabIndex = 4;
             this.btnBuscarBD.Text = "Cargar Bases de Datos";
             this.btnBuscarBD.UseVisualStyleBackColor = false;
             this.btnBuscarBD.Click += new System.EventHandler(this.btnBuscarBD_Click);
@@ -118,7 +118,7 @@
             this.btnAceptar.Location = new System.Drawing.Point(249, 165);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(143, 50);
-            this.btnAceptar.TabIndex = 1;
+            this.btnAceptar.TabIndex = 5;
             this.btnAceptar.Text = "Aceptar";
             this.btnAceptar.UseVisualStyleBackColor = false;
             this.btnAceptar.Click += new System.EventHandler(this.btnAceptar_Click);
@@ -147,9 +147,10 @@
             this.Controls.Add(this.cbBaseDatos);
             this.Controls.Add(this.cbInstancia);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "BuscarInstancias";
             this.Text = "BuscarInstancias";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BuscarInstancias_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

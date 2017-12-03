@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Autómata_II_SQL
 {
@@ -20,6 +17,7 @@ namespace Autómata_II_SQL
         private static bool Error { get; set; }
         private static int Opening { get; set; }
         private static int Ending { get; set; }
+        public static bool Siguiente { get; set; }
 
         public static int NoLinea { get; set; }
         public static string[][] TablaLexica { get { return TL.ToArray(); } }
@@ -79,6 +77,7 @@ namespace Autómata_II_SQL
 
         public static bool Analizar(string Cadena)
         {
+            IniciarLexico();
             TL = new List<string[]>();
             TablaDeSimbolos.Reset();
             Acumulador = "";
@@ -312,9 +311,9 @@ namespace Autómata_II_SQL
 
         private static void AgregarTL(string No, string Linea, string Token, string Tipo, string Codigo)
         {
-                TL.Add(new string[] { No, Linea, Token, Tipo, Codigo, Opening.ToString(), Contador.ToString()});
-                Acumulador = "";
-                Caracter++;
+            TL.Add(new string[] { No, Linea, Token, Tipo, Codigo, Opening.ToString(), Contador.ToString() });
+            Acumulador = "";
+            Caracter++;
         }
 
         private static void AgregarPalabraTL()
@@ -350,6 +349,266 @@ namespace Autómata_II_SQL
                 TablaDeSimbolos.Identificadores[Indice][2] += ", " + NoLinea;
         }
 
-        //private static bool EsUltimo { get { return Contador == Ultimo - 1; } }
+        public static string ObtenerSiguienteToken(string Cadena)
+        {
+            int Ultimo = Cadena.Length;
+            while (Contador < Ultimo && !Error)
+            {
+                Token = Cadena[Contador];
+                switch (Estado)
+                {
+                    case 0:
+                        if (Token == 13)
+                        {
+                            NoLinea++;
+                            Contador++;
+                        }
+                        else
+                        {
+                            if (Token == 10 || Token == 32)
+                                Contador++;
+                            else
+                            {
+                                Opening = Contador;
+                                if (TablaDeSimbolos.EsOperador(Token, out Indice))
+                                    Estado = MT[0, 1];
+                                else
+                                {
+                                    if (Token == '<')
+                                    {
+                                        Acumulador += Token;
+                                        Estado = MT[0, 2];
+                                        Contador++;
+                                    }
+                                    else
+                                    {
+                                        if (Token == '=')
+                                        {
+                                            Acumulador += Token;
+                                            Estado = MT[0, 3];
+                                        }
+                                        else
+                                        {
+                                            if (Token == '>')
+                                            {
+                                                Acumulador += Token;
+                                                Estado = MT[0, 4];
+                                                Contador++;
+                                            }
+                                            else
+                                            {
+                                                if (Token == '\'')
+                                                {
+                                                    TablaDeSimbolos.EsDelimitador(Token, out Indice);
+                                                    AgregarDelimitadorTL();
+                                                    Estado = MT[0, 5];
+                                                    Contador++;
+                                                    return "54";
+                                                }
+                                                else
+                                                {
+                                                    if (TablaDeSimbolos.EsDelimitador(Token, out Indice))
+                                                        Estado = MT[0, 6];
+                                                    else
+                                                    {
+                                                        if (char.IsLetter(Token))
+                                                        {
+                                                            Acumulador += Token;
+                                                            Estado = MT[0, 7];
+                                                            Contador++;
+                                                        }
+                                                        else
+                                                        {
+                                                            if (char.IsDigit(Token))
+                                                            {
+                                                                Acumulador += Token;
+                                                                Estado = MT[0, 8];
+                                                                Contador++;
+                                                            }
+                                                            else
+                                                            {
+                                                                if (Token == '$')
+                                                                    return "199";
+                                                                else
+                                                                    Estado = MT[0, 9];
+                                                            }//No Es Signo De Pesos
+                                                        }//No Es Letra
+                                                    }//No Es Delimitador
+                                                }//No Es Apóstrofe
+                                            }//No Es >
+                                        }//No Es =
+                                    }//No Es <
+                                }//No Es Operador
+                            }//No Es Espacio O \r
+                        }//No Es Enter
+                        break;
+                    case 1:
+                        AgregarDelimitadorTL();
+                        Contador++;
+                        Estado = 0;
+                        return TablaDeSimbolos.Delimitadores[Indice, 1];
+                        //break;
+                    case 2:
+                        AgregarOperadorTL();
+                        Contador++;
+                        Estado = 0;
+                        return TablaDeSimbolos.Operadores[Indice, 1];
+                    case 3:
+                        if ("=>".Contains(Token))
+                        {
+                            Acumulador += Token;
+                            Estado = 4;
+                        }
+                        else
+                        {
+                            TablaDeSimbolos.EsRelacional(Acumulador, out Indice);
+                            AgregarRelacionalTL();
+                            Estado = 0;
+                            return "8";
+                        }
+                        break;
+                    case 4:
+                        TablaDeSimbolos.EsRelacional(Acumulador, out Indice);
+                        AgregarRelacionalTL();
+                        Contador++;
+                        Estado = 0;
+                        return "8";
+                    case 5:
+                        if (Token == '=')
+                        {
+                            Acumulador += Token;
+                            Estado = 4;
+                        }
+                        else
+                        {
+                            TablaDeSimbolos.EsRelacional(Acumulador, out Indice);
+                            AgregarRelacionalTL();
+                            Estado = 0;
+                            return "8";
+                        }
+                        break;
+                    case 6:
+                        if (TL[Caracter - 2][2] == "CONSTANTE")
+                        {
+                            TablaDeSimbolos.EsDelimitador(Token, out Indice);
+                            AgregarDelimitadorTL();
+                            Contador++;
+                            Estado = 0;
+                            return "54";
+                        }
+                        else
+                        {
+                            if (Token == '\'')
+                            {
+                                Indice = TablaDeSimbolos.AgregarConstante(Caracter, Acumulador);
+                                AgregarConstanteTL();
+                                return "62";
+                            }
+                            else
+                            {
+                                Acumulador += Token;
+                                Contador++;
+                            }
+                        }
+                        break;
+                    case 7:
+                        if (Token == '#')
+                        {
+                            Acumulador += Token;
+                            if (!TablaDeSimbolos.EsIdentificador(Acumulador, out Indice))
+                                Indice = TablaDeSimbolos.AgregarIdentificador(Acumulador, NoLinea);
+                            AgregarIdentificadorTL();
+                            Contador++;
+                            Estado = 0;
+                            return "4";
+                        }
+                        else
+                        {
+                            if (char.IsLetterOrDigit(Token) || Token == '_')
+                            {
+                                Acumulador += Token;
+                                Contador++;
+                            }
+                            else
+                            {
+                                if (TablaDeSimbolos.EsPalabraReservada(Acumulador, out Indice))
+                                {
+                                    AgregarPalabraTL();
+                                    Estado = 0;
+                                    return TablaDeSimbolos.PalabrasReservadas[Indice, 1];
+                                }
+                                else
+                                {
+                                    if (!TablaDeSimbolos.EsIdentificador(Acumulador, out Indice))
+                                        Indice = TablaDeSimbolos.AgregarIdentificador(Acumulador, NoLinea);
+                                    AgregarIdentificadorTL();
+                                    Estado = 0;
+                                    return "4";
+                                }
+                            }
+                        }
+                        break;
+                    case 8:
+                        if (char.IsDigit(Token))
+                        {
+                            Acumulador += Token;
+                            Contador++;
+                        }
+                        else
+                        {
+                            Indice = TablaDeSimbolos.AgregarConstante(Caracter, Acumulador);
+                            AgregarConstanteTL();
+                            Estado = 0;
+                            return "61";
+                        }
+                        break;
+                    case 9:
+                        ModuloErrores.TipoError = ModuloErrores.TipoDeError.Léxico;
+                        ModuloErrores.Linea = NoLinea;
+                        ModuloErrores.IndiceTablaLexica = Contador;
+                        ModuloErrores.Error = true;
+                        return "-1";
+                }
+            }
+            if (Acumulador != "")
+            {
+                if (TablaDeSimbolos.EsRelacional(Acumulador, out Indice))
+                    AgregarRelacionalTL();
+                else
+                {
+                    if (TablaDeSimbolos.EsPalabraReservada(Acumulador, out Indice))
+                        AgregarPalabraTL();
+                    else
+                    {
+                        if (Estado == 8 || Estado == 6)
+                        {
+                            Indice = TablaDeSimbolos.AgregarConstante(Caracter - 1, Acumulador);
+                            AgregarConstanteTL();
+                        }
+                        else
+                        {
+                            if (Estado == 7)
+                            {
+                                if (!TablaDeSimbolos.EsIdentificador(Acumulador, out Indice))
+                                    Indice = TablaDeSimbolos.AgregarIdentificador(Acumulador, NoLinea);
+                                AgregarIdentificadorTL();
+                            }
+                        }
+                    }
+                }
+            }
+            return Acumulador;
+        }
+
+        public static void IniciarLexico()
+        {
+            TL = new List<string[]>();
+            TablaDeSimbolos.Reset();
+            Acumulador = "";
+            Caracter = NoLinea = 1;
+            Contador = Estado = 0;
+            Error = false;
+            Siguiente = true;
+        }
     }
 }

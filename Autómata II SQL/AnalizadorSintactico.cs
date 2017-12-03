@@ -9,8 +9,8 @@ namespace Autómata_II_SQL
         static string[,] TablaSintactica = new string[,]
         {
             /**/{"*", "4","8","10","11","12","13","14","15","16","18","19","20","22","24","25","26","27","50","51","53","54","61","62","72","199","55"},
-            /*200*/{"200", "","","","","","","","","16 17 4 700 52 202 53 55 201","","","","","","","","","","","","","","","","",""},
-            /*201*/{"201", "","","722 300 723 55 201","","","","","","200","","","","","","","","211","","","","","","","","99",""},
+            /*200*/{"200", "","","","","","","","","752 16 17 4 700 52 202 53 55 753 201","","","","","","","","","","","","","","","","",""},
+            /*201*/{"201", "","","750 722 300 723 55 751 201","","","","","","200","","","","","","","","211","","","","","","","","99",""},
             /*202*/{"202", "4 701 203 702 52 61 703 53 204 704 205","","","","","","","","","","","","","","","","","","","","","","","","",""},
             /*203*/{"203","","","","","","","","","","18","19","","","","","","","","","","","","","","",""},
             /*204*/{"204","","","","","","","","","","","","20 21","","","","","","99","","99","","","","","",""},
@@ -20,7 +20,7 @@ namespace Autómata_II_SQL
             /*208*/{"208","","","","","","","","","","","","","","24 706 23","25 706 23 ","","","","","","","","","","",""},
             /*209*/{"209","","","","","","","","","","","","","","","","26 4 708 52 4 709 53 210","","50 207","","99","","","","","",""},
             /*210*/{"210","","","","","","","","","","","","","","","","","","50 207","","99","","","","","",""},
-            /*211*/{"211","","","","","","","","","","","","","","","","","27 28 4 708 29 52 212 53 55 215","","","","","","","","",""},
+            /*211*/{"211","","","","","","","","","","","","","","","","","754 27 28 4 708 29 52 212 53 55 755 215","","","","","","","","",""},
             /*212*/{"212","","","","","","","","","","","","","","","","","","","","","213 214","213 214","","","",""},
             /*213*/{"213","","","","","","","","","","","","","","","","","","","","","54 710 62 711 54 ","61 711","","","",""},
             /*214*/{"214","","","","","","","","","","","","","","","","","","50  212","","99","","","","","",""},
@@ -169,11 +169,22 @@ namespace Autómata_II_SQL
                 if (Xx >= 700)
                 {
                     string Identificador = "";
-                    if (Xx != 722 && Xx != 723)
-                        Identificador = AnalizadorLexico.TablaLexica[Apuntador - 1][2];
-                    if (Identificador == "CONSTANTE")
-                        Identificador = TablaDeSimbolos.BuscarConstante(AnalizadorLexico.TablaLexica[Apuntador - 1][4]);
-                    AnalizadorSemantico.Metodos700(Xx, Identificador, Apuntador - 1);
+                    if (Xx < 750 || Xx > 755)
+                    {
+                        if (Xx != 722 && Xx != 723)
+                            Identificador = AnalizadorLexico.TablaLexica[Apuntador - 1][2];
+                        if (Identificador == "CONSTANTE")
+                            Identificador = TablaDeSimbolos.BuscarConstante(AnalizadorLexico.TablaLexica[Apuntador - 1][4]);
+                        Metodos700(Xx, Identificador, Apuntador - 1);
+                    }
+                    else
+                    {
+                        string[] t = AnalizadorLexico.TablaLexica[Apuntador >= AnalizadorLexico.TablaLexica.Length ? AnalizadorLexico.TablaLexica.Length - 1 : Apuntador];
+                        string Inicio = AnalizadorLexico.TablaLexica.Length > 0 ? AnalizadorLexico.TablaLexica[Apuntador >= AnalizadorLexico.TablaLexica.Length ? AnalizadorLexico.TablaLexica.Length - 1 : Apuntador][5] : "0";
+                        if (Apuntador == AnalizadorLexico.TablaLexica.Length)
+                            Inicio = AnalizadorLexico.TablaLexica[Apuntador >= AnalizadorLexico.TablaLexica.Length ? AnalizadorLexico.TablaLexica.Length - 1 : Apuntador][6];
+                        Metodos700(Xx, Inicio, Convert.ToInt32(Inicio));
+                    }
                     if (ModuloErrores.Error)
                     {
                         if (Xx != 799)
@@ -261,6 +272,106 @@ namespace Autómata_II_SQL
                 Cad3.ToString(),
                 Cad4.ToString()
             });
+        }
+
+        public static void Analizar1Pasada(string CadenaExt)
+        {
+            AnalizadorLexico.IniciarLexico();
+            InicializarSemantico();
+            ModuloErrores.PalabraError = "";
+            int Xx;
+            Arbol = new List<string[]>();
+            ModuloErrores.Error = false;
+            Pila = "";
+            InsertarPila("199");
+            InsertarPila("201"); //Insertar Q
+            Apuntador = 0;
+            Cadena = CadenaExt;
+            AgregarRegistro(Pila, RestanteCadena, "", "");
+            do
+            {
+                X = ExtraerPila();
+                if (AnalizadorLexico.Siguiente)
+                {
+                    K = AnalizadorLexico.ObtenerSiguienteToken(CadenaExt + "$");
+                    AnalizadorLexico.Siguiente = false;
+                    if (K == "-1")
+                        break;
+                }
+                AgregarRegistro();
+                Xx = int.Parse(X);
+                if (Xx >= 700)
+                {
+                    string Identificador = "";
+                    if (Xx < 750 || Xx > 755)
+                    {
+                        if (Xx != 722 && Xx != 723)
+                            Identificador = AnalizadorLexico.TablaLexica[Apuntador - 1][2];
+                        if (Identificador == "CONSTANTE")
+                            Identificador = TablaDeSimbolos.BuscarConstante(AnalizadorLexico.TablaLexica[Apuntador - 1][4]);
+                        Metodos700(Xx, Identificador, Apuntador - 1);
+                    }
+                    else
+                    {
+                        string[] t = AnalizadorLexico.TablaLexica[Apuntador >= AnalizadorLexico.TablaLexica.Length ? AnalizadorLexico.TablaLexica.Length - 1 : Apuntador];
+                        string Inicio = AnalizadorLexico.TablaLexica.Length > 0 ? AnalizadorLexico.TablaLexica[Apuntador >= AnalizadorLexico.TablaLexica.Length ? AnalizadorLexico.TablaLexica.Length-1 : Apuntador][5] : "0";
+                        if (Apuntador == AnalizadorLexico.TablaLexica.Length)
+                            Inicio = AnalizadorLexico.TablaLexica[Apuntador >= AnalizadorLexico.TablaLexica.Length ? AnalizadorLexico.TablaLexica.Length - 1 : Apuntador][6];
+                        Metodos700(Xx, Inicio, Convert.ToInt32(Inicio));
+                    }
+                    if (ModuloErrores.Error)
+                    {
+                        if (Xx != 799)
+                        {
+                            ModuloErrores.IndiceTablaLexica = Apuntador - 1;
+                            ModuloErrores.Linea = Convert.ToInt32(AnalizadorLexico.TablaLexica[Apuntador - 1][1]);
+                        }
+                    }
+                }
+                else
+                {
+                    if ((Xx >= 4 && Xx <= 90) || (Xx == 199)) //Como saber si x es un terminal porque todos son números :B Debe estar bien hasta aquí
+                    {
+                        if (X == K)
+                        {
+                            Apuntador++;
+                            AnalizadorLexico.Siguiente = true;
+                        }
+                        else
+                        {
+                            ModuloErrores.Error = true;
+                            ModuloErrores.NoError = TablaDeSimbolos.BuscarBuscando(X);
+                            ModuloErrores.TipoError = ModuloErrores.TipoDeError.Sintáctico;
+                            ModuloErrores.Linea = Convert.ToInt32(AnalizadorLexico.TablaLexica[Apuntador - 1][1]);
+                        }
+                    }
+                    else
+                    {
+                        int t = ObtenerIndiceX();
+                        int p = ObtenerIndiceK();
+                        string temp = t == -1 || p == -1 ? "" : TablaSintactica[t, p];
+                        if (temp != "")
+                        {
+                            if (temp != "99")
+                            {
+                                string[] split = temp.Split(' ');
+                                for (int i = split.Length - 1; i >= 0; i--)
+                                    InsertarPila(split[i]);
+                                AgregarRegistro(Pila, "", X, K);
+                            }
+                        }
+                        else
+                        {
+                            ModuloErrores.TipoError = ModuloErrores.TipoDeError.Sintáctico;
+                            ModuloErrores.Error = true;
+                            ModuloErrores.NoError = 7;
+                            int Indice = Apuntador - 1 < 0 ? 0 : Apuntador - 1;
+                            ModuloErrores.Linea = Convert.ToInt32(AnalizadorLexico.TablaLexica[Indice][1]);
+                            ModuloErrores.PalabraError = ObtenerPrimerosOSiguientes();
+                        }
+                    }
+                }
+            } while (X != "199" && !ModuloErrores.Error);
         }
     }
 }

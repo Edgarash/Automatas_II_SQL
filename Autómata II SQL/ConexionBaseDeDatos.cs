@@ -14,10 +14,12 @@ namespace Autómata_II_SQL
     {
         static SqlConnection Conexion { get; set; }
         public static string CadenaConexion { get; set; }
+        public static List<string[]> Comandos { get; set; }
 
         public static void IniciarConexion()
         {
             Conexion = new SqlConnection(CadenaConexion);
+            Conexion.InfoMessage += Conexion_InfoMessage;
         }
 
         public static void LlenarTablas()
@@ -147,8 +149,79 @@ namespace Autómata_II_SQL
                 }
                 Tablas[i][3] = (Convert.ToInt32(Tablas[i][3]) + Tablita.Rows.Count).ToString();
             }
-
             Conexion.Close();
+        }
+
+        public static void MandarComandos(string Consultas)
+        {
+            List<object> Selects = new List<object>();
+            SqlCommand Comando = null;
+            SqlDataAdapter Adaptador = null;
+            string temp = "";
+            for (int i = 0; i < Comandos.Count; i++)
+            {
+                Conexion.Close();
+                int
+                    Inicio = Convert.ToInt32(Comandos[i][1]),
+                    Final = i != Comandos.Count - 1? Convert.ToInt32(Comandos[i][2]) : Consultas.Length + 1,
+                    Diferencia = Final - Inicio - 1;
+                if (Comandos[i][0] == "INSERT")
+                {
+                    string t1 = Consultas.Substring(Inicio, Diferencia);
+                    temp += t1;
+                }
+                else
+                {
+                    if (temp != "")
+                    {
+                        Comando = new SqlCommand(temp, Conexion);
+                        Conexion.Open();
+                        int res = Comando.ExecuteNonQuery();
+                        Selects.Add(res);
+                        Conexion.Close();
+                    }
+                    if (Comandos[i][0] == "CREATE")
+                    {
+                        temp = Consultas.Substring(Inicio, Diferencia);
+                        Comando = new SqlCommand(temp, Conexion);
+                        Conexion.Open();
+                        int res = Comando.ExecuteNonQuery();
+                        Selects.Add(res);
+                        temp = "";
+                    }
+                    else
+                    {
+                        if (Comandos[i][0] == "SELECT")
+                        {
+                            temp = Consultas.Substring(Inicio, Diferencia);
+                            Comando = new SqlCommand(temp, Conexion);
+                            Conexion.Open();
+                            Adaptador = new SqlDataAdapter(Comando);
+                            DataTable x = new DataTable();
+                            Adaptador.Fill(x);
+                            Selects.Add(x);
+                            temp = "";
+                        }
+                    }
+                }
+            }
+            if (temp != "")
+            {
+                Comando = new SqlCommand(temp, Conexion);
+                Conexion.Open();
+                int res = Comando.ExecuteNonQuery();
+                Selects.Add(res);
+                Conexion.Close();
+            }
+            if (Selects.Count > 0)
+            {
+                new Resultados(Selects.ToArray()).Show();
+            }
+        }
+
+        private static void Conexion_InfoMessage(object sender, SqlInfoMessageEventArgs e)
+        {
+            string temp = e.Message;
         }
     }
 }

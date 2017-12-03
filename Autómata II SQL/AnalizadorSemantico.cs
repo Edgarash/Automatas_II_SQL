@@ -35,6 +35,7 @@ namespace Autómata_II_SQL
             //Tablas = new List<string[]>();
             //Atributos = new List<string[]>();
             //Restricciones = new List<string[]>();
+            ConexionBaseDeDatos.Comandos = new List<string[]>();
             ConexionBaseDeDatos.LlenarTablas();
             SelectCampos = new List<string[]>();
             FromTablas = new List<string[]>();
@@ -233,6 +234,24 @@ namespace Autómata_II_SQL
                             i--;
                         }
                     SelectIndice--;
+                    break;
+                case 750:
+                    ConexionBaseDeDatos.Comandos.Add(new string[] { "SELECT", Identificador, "" });
+                    break;
+                case 751:
+                    ConexionBaseDeDatos.Comandos[ConexionBaseDeDatos.Comandos.Count - 1][2] = (Convert.ToInt32(Identificador) - 1).ToString();
+                    break;
+                case 752:
+                    ConexionBaseDeDatos.Comandos.Add(new string[] { "CREATE", Identificador, "" });
+                    break;
+                case 753:
+                    ConexionBaseDeDatos.Comandos[ConexionBaseDeDatos.Comandos.Count - 1][2] = (Convert.ToInt32(Identificador) - 1).ToString();
+                    break;
+                case 754:
+                    ConexionBaseDeDatos.Comandos.Add(new string[] { "INSERT", Identificador, "" });
+                    break;
+                case 755:
+                    ConexionBaseDeDatos.Comandos[ConexionBaseDeDatos.Comandos.Count - 1][2] = (Convert.ToInt32(Identificador) - 1).ToString();
                     break;
                 case 799:
                     SelectBuscarAtributoEnTablas();
